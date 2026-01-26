@@ -27,6 +27,7 @@ class VetHubApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Just a comment
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // darkTheme: AppTheme.darkTheme,
