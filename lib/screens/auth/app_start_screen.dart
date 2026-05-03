@@ -3,6 +3,8 @@ import 'package:clinic_management_app/bloc/logged_clinic/logged_clinic_states.da
 import 'package:clinic_management_app/navigation/navigation_helper.dart';
 import 'package:clinic_management_app/screens/auth/clinic_choice_screen.dart';
 import 'package:clinic_management_app/screens/auth/login_screen.dart';
+import 'package:clinic_management_app/screens/clinic/clinic_root.dart';
+import 'package:clinic_management_app/services/auth_service.dart';
 import 'package:clinic_management_app/services/storage.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,10 @@ class AppStartScreen extends StatefulWidget {
 
 class _AppStartScreenState extends State<AppStartScreen> {
   bool _checkedStorage = false;
+  bool _hasSession = false;
+  bool _navigated = false;
+  bool _restoring = false;
+  bool _clinicFetchRequested = false;
 
   @override
   void initState() {
@@ -25,16 +31,62 @@ class _AppStartScreenState extends State<AppStartScreen> {
   }
 
   Future<void> _restoreClinic() async {
-    final clinicCode = await Storage.getClinicCode();
-    if (!mounted) return;
+    if (_restoring) return;
+    _restoring = true;
+    try {
+      var clinicData = await Storage.getClinicData();
+      var clinicCode = clinicData?['clinic_code']?.toString();
+      final restoredSession = await AuthService().restoreSession();
+      final clinicUserId = await Storage.getClinicUserId();
 
-    setState(() {
-      _checkedStorage = true;
-    });
+      var hasSession = restoredSession;
+      if (clinicCode == null && hasSession) {
+        await AuthService().signOutAndClear(clearClinic: true);
+        hasSession = false;
+      }
+      if (hasSession && (clinicUserId == null || clinicUserId.isEmpty)) {
+        final fetchedClinicUserId = await AuthService().fetchClinicUserId(
+          clinicId: clinicData?['clinic_id']?.toString(),
+        );
+        if (fetchedClinicUserId != null && fetchedClinicUserId.isNotEmpty) {
+          await Storage.saveClinicUserId(fetchedClinicUserId);
+        } else {
+          await AuthService().signOutAndClear(clearClinic: true);
+          hasSession = false;
+          clinicCode = null;
+          clinicData = null;
+        }
+      }
 
-    if (clinicCode != null) {
-      context.read<LoggedClinicCubit>().getClinicByCode(clinicCode);
+      if (!mounted) return;
+
+      setState(() {
+        _checkedStorage = true;
+        _hasSession = hasSession;
+      });
+
+      if (clinicCode == null || clinicCode.isEmpty) {
+        if (!_navigated) {
+          _navigated = true;
+          if (_hasSession) {
+            await AuthService().signOutAndClear(clearClinic: true);
+          }
+          NavigatorHelper.replace(context, const ClinicChoiceScreen());
+        }
+        return;
+      }
+
+      if (!_clinicFetchRequested) {
+        _clinicFetchRequested = true;
+        context.read<LoggedClinicCubit>().getClinicByCode(clinicCode);
+      }
+    } finally {
+      _restoring = false;
     }
+  }
+
+  Future<void> _clearClinicCache() async {
+    await Storage.clearAllAuthAndClinic();
   }
 
   @override
@@ -42,28 +94,33 @@ class _AppStartScreenState extends State<AppStartScreen> {
     return BlocListener<LoggedClinicCubit, LoggedClinicState>(
       listener: (context, state) {
         if (state is LoggedClinicSuccess) {
-          NavigatorHelper.replace(
-            context,
-            LoginScreen(clinic: state.clinic),
-          );
+          if (_navigated) return;
+          _navigated = true;
+          if (_hasSession) {
+            NavigatorHelper.replace(context, const ClinicRootScreen());
+          } else {
+            NavigatorHelper.replace(context, LoginScreen(clinic: state.clinic));
+          }
+          return;
+        }
+        if (state is LoggedClinicFailure && _hasSession) {
+          if (_navigated) return;
+          _navigated = true;
+          AuthService().signOutAndClear(clearClinic: true);
+          NavigatorHelper.replace(context, const ClinicChoiceScreen());
+          return;
+        }
+        if (state is LoggedClinicFailure && !_hasSession) {
+          if (_navigated) return;
+          _navigated = true;
+          _clearClinicCache();
+          NavigatorHelper.replace(context, const ClinicChoiceScreen());
         }
       },
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: Center(
-          child: _checkedStorage
-              ? BlocBuilder<LoggedClinicCubit, LoggedClinicState>(
-                  builder: (context, state) {
-                    if (state is LoggedClinicLoading) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (state is LoggedClinicFailure) {
-                      return const ClinicChoiceScreen();
-                    }
-                    return const ClinicChoiceScreen();
-                  },
-                )
-              : const CircularProgressIndicator(),
+          child: const CircularProgressIndicator(),
         ),
       ),
     );

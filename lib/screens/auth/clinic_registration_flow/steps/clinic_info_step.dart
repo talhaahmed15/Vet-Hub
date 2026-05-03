@@ -5,7 +5,7 @@ import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
-class ClinicInfoStep extends StatelessWidget {
+class ClinicInfoStep extends StatefulWidget {
   const ClinicInfoStep({
     required this.formData,
     required this.formKey,
@@ -16,9 +16,14 @@ class ClinicInfoStep extends StatelessWidget {
   final GlobalKey formKey;
 
   @override
+  State<ClinicInfoStep> createState() => _ClinicInfoStepState();
+}
+
+class _ClinicInfoStepState extends State<ClinicInfoStep> {
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       autovalidateMode: AutovalidateMode.disabled,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -37,7 +42,7 @@ class ClinicInfoStep extends StatelessWidget {
             Text('Clinic Name', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "e.g., Happy Paws Veterinary",
+              hintText: "e.g., Happy Paws Veterinary",
               validator: (val) {
                 if (val == null || val.trim().isEmpty) {
                   return "Clinic name is required";
@@ -48,7 +53,7 @@ class ClinicInfoStep extends StatelessWidget {
                 return null;
               },
               onChanged: (val) {
-                formData.clinicName = val;
+                widget.formData.clinicName = val;
               },
             ),
             16.height,
@@ -57,7 +62,7 @@ class ClinicInfoStep extends StatelessWidget {
             Text('Clinic Address', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "123 Vet Street, City, State",
+              hintText: "123 Vet Street, City, State",
               keyboardType: TextInputType.streetAddress,
               prefixIcon: const Icon(Icons.location_on_outlined),
               validator: (val) {
@@ -67,7 +72,7 @@ class ClinicInfoStep extends StatelessWidget {
                 return null;
               },
               onChanged: (val) {
-                formData.clinicAddress = val;
+                widget.formData.clinicAddress = val;
               },
             ),
             16.height,
@@ -76,7 +81,7 @@ class ClinicInfoStep extends StatelessWidget {
             Text('Contact Number', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "+1 (555) 000-0000",
+              hintText: "+1 (555) 000-0000",
               keyboardType: TextInputType.phone,
               prefixIcon: const Icon(Icons.phone_outlined),
               validator: (val) {
@@ -89,7 +94,7 @@ class ClinicInfoStep extends StatelessWidget {
                 return null;
               },
               onChanged: (val) {
-                formData.contactNumber = val;
+                widget.formData.contactNumber = val;
               },
             ),
             16.height,
@@ -98,7 +103,7 @@ class ClinicInfoStep extends StatelessWidget {
             Text('Website', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "www.happypaws.com",
+              hintText: "www.happypaws.com",
               prefixIcon: const Icon(Icons.link),
               validator: (val) {
                 if (val == null || val.isEmpty) return null;
@@ -109,9 +114,11 @@ class ClinicInfoStep extends StatelessWidget {
                 return null;
               },
               onChanged: (val) {
-                formData.website = val;
+                widget.formData.website = val;
               },
             ),
+            16.height,
+
             32.height,
           ],
         ),

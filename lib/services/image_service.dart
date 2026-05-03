@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:image_picker/image_picker.dart';
 
 class ImageService {
@@ -6,7 +8,10 @@ class ImageService {
   final ImagePicker _picker;
 
   Future<String?> pickImageFromGallery() async {
+    log('Picking image from gallery');
     final file = await _picker.pickImage(source: ImageSource.gallery);
-    return file?.path;
+    final path = file?.path;
+    log(path == null ? 'No image selected' : 'Image selected: $path');
+    return path;
   }
 }

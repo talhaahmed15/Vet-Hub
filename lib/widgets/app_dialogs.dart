@@ -55,4 +55,53 @@ class AppDialog {
 
     return null; // user canceled
   }
+
+  static Future<bool?> confirmDelete({
+    required BuildContext context,
+    required String title,
+    required String message,
+    String confirmText = 'Delete',
+    String cancelText = 'Cancel',
+  }) {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
+            ),
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(color: AppColors.darkGrey),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(
+                cancelText,
+                style: const TextStyle(color: AppColors.darkGrey),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.error,
+                foregroundColor: AppColors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(confirmText),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

@@ -28,10 +28,14 @@ class ServicesAndHoursStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void toggleDay(String day) {}
-
-    bool isDaySelected(String day) {
-      return false;
+    const defaultWorkingDays = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    final hasWorkingDays =
+        formData.workingDays != null && formData.workingDays!.isNotEmpty;
+    final initialWorkingDays = hasWorkingDays
+        ? List<String>.from(formData.workingDays!)
+        : List<String>.from(defaultWorkingDays);
+    if (!hasWorkingDays) {
+      formData.workingDays = List<String>.from(initialWorkingDays);
     }
 
     return Form(
@@ -121,12 +125,39 @@ class ServicesAndHoursStep extends StatelessWidget {
             // Working Days
             Text('Working Days', style: AppFonts.semiBold(fontSize: 12)),
             8.height,
-            SelectableChips(
-              items: days,
-              initialSelected:
-                  formData.workingDays ?? [], // preselect if editing
-              onSelectionChanged: (selected) {
-                formData.workingDays = selected;
+            FormField<List<String>>(
+              initialValue: initialWorkingDays,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select working days";
+                }
+                return null;
+              },
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SelectableChips(
+                      items: days,
+                      initialSelected: field.value ?? initialWorkingDays,
+                      onSelectionChanged: (selected) {
+                        formData.workingDays = selected;
+                        field.didChange(selected);
+                      },
+                    ),
+                    if (field.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          field.errorText ?? "",
+                          style: AppFonts.regular(
+                            fontSize: 10,
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
               },
             ),
 

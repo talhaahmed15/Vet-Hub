@@ -19,10 +19,11 @@ const ClinicUserSchema = z
   .object({
     clinic_code: z.string().length(5),
     full_name: z.string().min(3),
-    email: z.string().email(),
+    username: z.string().min(3),
     password: z.string().min(8).optional(),
     role: RoleSchema,
-    phone: z.string().min(5).optional().nullable(),
+    phone: z.string().min(5),
+    auth_email: z.string().email().optional(),
     auth_user_id: z.string().uuid().optional(),
   })
   .refine((data) => data.auth_user_id || data.password, {
@@ -106,7 +107,7 @@ Deno.serve(async (req) => {
     .from("clinic_users")
     .select("id")
     .eq("clinic_id", clinic.clinic_id)
-    .eq("email", payload.email)
+    .eq("username", payload.username)
     .maybeSingle();
 
   if (existingError) {
@@ -123,7 +124,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         ok: false,
-        error: "Email is already registered for this clinic",
+        error: "Username is already registered for this clinic",
       }),
       {
         status: 409,
@@ -151,11 +152,15 @@ Deno.serve(async (req) => {
       );
     }
 
-    if (authLookup.user.email?.toLowerCase() !== payload.email.toLowerCase()) {
+    if (
+      payload.phone &&
+      authLookup.user.phone &&
+      authLookup.user.phone !== payload.phone
+    ) {
       return new Response(
         JSON.stringify({
           ok: false,
-          error: "Auth user email does not match payload",
+          error: "Auth user phone does not match payload",
         }),
         {
           status: 400,
@@ -164,9 +169,12 @@ Deno.serve(async (req) => {
       );
     }
   } else {
+    const baseUsername = payload.username.trim().toLowerCase();
+    const authEmail =
+      payload.auth_email ?? `${baseUsername}@${payload.clinic_code}.vet-hub.local`;
     const { data: authUser, error: authError } = await supabase.auth.admin
       .createUser({
-        email: payload.email,
+        email: authEmail,
         password: payload.password!,
         email_confirm: true,
       });
@@ -192,8 +200,11 @@ Deno.serve(async (req) => {
     .insert({
       clinic_id: clinic.clinic_id,
       full_name: payload.full_name,
-      email: payload.email,
-      phone: payload.phone ?? null,
+      username: payload.username,
+      phone: payload.phone,
+      auth_email: payload.auth_email ??
+        `${payload.username.trim().toLowerCase()}@${payload.clinic_code}.vet-hub.local`,
+      account_status: "under_review",
       role: payload.role,
       auth_user_id: authUserId,
     })

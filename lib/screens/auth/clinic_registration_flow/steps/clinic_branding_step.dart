@@ -5,6 +5,7 @@ import 'package:clinic_management_app/services/image_service.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
+import 'package:clinic_management_app/widgets/outline_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -109,19 +110,17 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
                     Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
+                          child: PrimaryOutlinedButton(
                             onPressed: () => _pickImage(
                               onSelected: (path) {
                                 widget.formData.logoUrl = path;
                               },
                               onFieldChanged: field.didChange,
                             ),
-                            icon: const Icon(Icons.photo_outlined),
-                            label: Text(
-                              field.value?.isNotEmpty == true
-                                  ? "Change Clinic Logo"
-                                  : "Select Clinic Logo",
-                            ),
+                            text:
+                                field.value?.isNotEmpty == true
+                                    ? "Change Clinic Logo"
+                                    : "Select Clinic Logo",
                           ),
                         ),
                       ],
@@ -147,7 +146,7 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
             Text('Clinic Tagline', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "Caring for pets, one visit at a time",
+              hintText: "Caring for pets, one visit at a time",
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return "Tagline is required";
@@ -164,7 +163,7 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
             Text('About Clinic', style: AppFonts.semiBold(fontSize: 12)),
             4.height,
             CustomTextField(
-              hint: "Brief description of your clinic",
+              hintText: "Brief description of your clinic",
               maxLines: 4,
               validator: (val) {
                 if (val == null || val.length < 20) {

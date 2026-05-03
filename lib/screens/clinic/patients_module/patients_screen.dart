@@ -1,3 +1,4 @@
+import 'package:clinic_management_app/screens/clinic/invoice/invoices_screen.dart';
 import 'package:flutter/material.dart';
 
 class PatientsScreen extends StatelessWidget {
@@ -5,6 +6,6 @@ class PatientsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Patient Page"));
+    return const InvoicesScreen();
   }
 }

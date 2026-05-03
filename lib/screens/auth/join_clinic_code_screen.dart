@@ -1,6 +1,8 @@
 import 'package:clinic_management_app/bloc/logged_clinic/logged_clinic_cubit.dart';
 import 'package:clinic_management_app/bloc/logged_clinic/logged_clinic_states.dart';
 import 'package:clinic_management_app/navigation/navigation_helper.dart';
+import 'package:clinic_management_app/screens/auth/clinic_status/clinic_rejected_screen.dart';
+import 'package:clinic_management_app/screens/auth/clinic_status/clinic_under_review_screen.dart';
 import 'package:clinic_management_app/screens/auth/login_screen.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
@@ -46,8 +48,25 @@ class _JoinClinicOtpScreenState extends State<JoinClinicOtpScreen> {
       child: BlocConsumer<LoggedClinicCubit, LoggedClinicState>(
         listener: (context, state) {
           if (state is LoggedClinicSuccess) {
-            AppToast.success(context, "Clinic joined successfully!");
-            NavigatorHelper.replace(context, LoginScreen(clinic: state.clinic));
+            final status = state.clinic.clinicStatus;
+            if (status == "approved" || status == null || status.isEmpty) {
+              AppToast.success(context, "Clinic joined successfully!");
+              NavigatorHelper.replace(
+                context,
+                LoginScreen(clinic: state.clinic),
+              );
+              return;
+            }
+
+            if (status == "rejected") {
+              NavigatorHelper.push(context, const ClinicRejectedScreen());
+              return;
+            }
+
+            NavigatorHelper.push(
+              context,
+              const ClinicUnderReviewScreen(),
+            );
           } else if (state is LoggedClinicFailure) {
             AppToast.error(context, state.message);
           }

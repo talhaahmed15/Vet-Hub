@@ -12,7 +12,7 @@ class SelectableChips extends StatefulWidget {
     this.labelStyle,
     this.selectedColor,
     this.unselectedColor,
-    this.chipSpacing = 8,
+    this.chipSpacing = 4,
   });
 
   final List<String> items;
@@ -54,13 +54,17 @@ class _SelectableChipsState extends State<SelectableChips> {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: widget.chipSpacing,
-      runSpacing: widget.chipSpacing,
+      runSpacing: 0,
       children: widget.items.map((item) {
         final isSelected = selectedItems.contains(item);
         return GestureDetector(
           onTap: () => _toggleItem(item),
           child: Chip(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+            labelPadding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 0,
+            ),
             label: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

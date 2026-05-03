@@ -13,6 +13,13 @@ class Clinic {
   List<String>? workingDays;
   String? openingTime;
   String? closingTime;
+  String? packageId;
+  String? packageKey;
+  String? packageName;
+  String? packageStatus;
+  String? clinicStatus;
+  DateTime? trialEndAt;
+  String? paymentProofUrl;
   bool isCertified;
 
   Clinic({
@@ -30,6 +37,13 @@ class Clinic {
     this.workingDays,
     this.openingTime,
     this.closingTime,
+    this.packageId,
+    this.packageKey,
+    this.packageName,
+    this.packageStatus,
+    this.clinicStatus,
+    this.trialEndAt,
+    this.paymentProofUrl,
     this.isCertified = false,
   });
 
@@ -54,6 +68,11 @@ class Clinic {
           : null,
       openingTime: map['opening_time'],
       closingTime: map['closing_time'],
+      packageId: map['package_id']?.toString(),
+      packageStatus: map['package_status']?.toString(),
+      clinicStatus: map['clinic_status']?.toString(),
+      trialEndAt: _parseDateTime(map['trial_end_at']),
+      paymentProofUrl: map['payment_proof_url']?.toString(),
       isCertified: map['is_certified'] ?? false,
     );
   }
@@ -75,6 +94,11 @@ class Clinic {
       'working_days': workingDays,
       'opening_time': openingTime,
       'closing_time': closingTime,
+      'package_id': packageId,
+      'package_status': packageStatus,
+      'clinic_status': clinicStatus,
+      'trial_end_at': trialEndAt?.toIso8601String(),
+      'payment_proof_url': paymentProofUrl,
       'is_certified': isCertified,
     };
   }
@@ -94,6 +118,13 @@ class Clinic {
     List<String>? workingDays,
     String? openingTime,
     String? closingTime,
+    String? packageId,
+    String? packageKey,
+    String? packageName,
+    String? packageStatus,
+    String? clinicStatus,
+    DateTime? trialEndAt,
+    String? paymentProofUrl,
     bool? isCertified,
   }) {
     return Clinic(
@@ -111,7 +142,23 @@ class Clinic {
       workingDays: workingDays ?? this.workingDays,
       openingTime: openingTime ?? this.openingTime,
       closingTime: closingTime ?? this.closingTime,
+      packageId: packageId ?? this.packageId,
+      packageKey: packageKey ?? this.packageKey,
+      packageName: packageName ?? this.packageName,
+      packageStatus: packageStatus ?? this.packageStatus,
+      clinicStatus: clinicStatus ?? this.clinicStatus,
+      trialEndAt: trialEndAt ?? this.trialEndAt,
+      paymentProofUrl: paymentProofUrl ?? this.paymentProofUrl,
       isCertified: isCertified ?? this.isCertified,
     );
   }
+}
+
+DateTime? _parseDateTime(dynamic value) {
+  if (value == null) return null;
+  if (value is DateTime) return value;
+  if (value is String && value.isNotEmpty) {
+    return DateTime.tryParse(value);
+  }
+  return null;
 }

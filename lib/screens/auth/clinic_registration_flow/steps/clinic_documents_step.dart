@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clinic_management_app/models/clinic_model.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/outline_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -104,19 +105,17 @@ class _ClinicDocumentsStepState extends State<ClinicDocumentsStep> {
                     Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
+                          child: PrimaryOutlinedButton(
                             onPressed: () async {
                               await _pickCertificate((path) {
                                 widget.formData.certificateUrl = path;
                                 field.didChange(path);
                               });
                             },
-                            icon: const Icon(Icons.upload_file_outlined),
-                            label: Text(
-                              field.value?.isNotEmpty == true
-                                  ? "Change Certificate"
-                                  : "Select Certificate",
-                            ),
+                            text:
+                                field.value?.isNotEmpty == true
+                                    ? "Change Certificate"
+                                    : "Select Certificate",
                           ),
                         ),
                       ],

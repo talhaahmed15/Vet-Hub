@@ -1,6 +1,8 @@
-import 'package:clinic_management_app/navigation/navigation_helper.dart';
+import 'package:clinic_management_app/navigation/page_transition.dart';
+import 'package:clinic_management_app/screens/auth/clinic_choice_screen.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
@@ -9,44 +11,69 @@ import 'package:flutter/services.dart';
 
 class ClinicRegistrationCompleteScreen extends StatelessWidget {
   final String clinicCode;
+  final String? clinicStatus;
 
-  const ClinicRegistrationCompleteScreen({super.key, required this.clinicCode});
+  const ClinicRegistrationCompleteScreen({
+    super.key,
+    required this.clinicCode,
+    this.clinicStatus,
+  });
+
+  Future<void> _goToMainScreen(BuildContext context) async {
+    await Navigator.of(context).pushAndRemoveUntil(
+      AppPageTransition.build(
+        const ClinicChoiceScreen(),
+        type: PageTransitionType.cupertino,
+      ),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: CustomAppBar(title: "Registration Complete"),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              48.height,
-              _SuccessIcon(),
-              32.height,
-              _TitleSection(),
-              32.height,
-              _ClinicCodeCard(code: clinicCode),
-              20.height,
-              _CopyButton(code: clinicCode),
-              20.height,
-              PrimaryButton(
-                text: "Get Started",
-                onPressed: () {
-                  NavigatorHelper.popUntilRoot(context);
-                },
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Text(
-                  "You can always find this code in your clinic settings.",
-                  textAlign: TextAlign.center,
-                  style: AppFonts.regular(fontSize: 12, color: AppColors.grey),
+    return WillPopScope(
+      onWillPop: () async {
+        await _goToMainScreen(context);
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: CustomAppBar(
+          title: "Registration Complete",
+          onBackPressed: () => _goToMainScreen(context),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                48.height,
+                _SuccessIcon(),
+                32.height,
+                _TitleSection(status: clinicStatus),
+                32.height,
+                _ClinicCodeCard(code: clinicCode),
+                20.height,
+                _CopyButton(code: clinicCode),
+                10.height,
+                PrimaryButton(
+                  text: "Get Started",
+                  onPressed: () => _goToMainScreen(context),
                 ),
-              ),
-            ],
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    "You can always find this code in your clinic settings.",
+                    textAlign: TextAlign.center,
+                    style: AppFonts.regular(
+                      fontSize: 12,
+                      color: AppColors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,6 +107,18 @@ class _SuccessIcon extends StatelessWidget {
 }
 
 class _TitleSection extends StatelessWidget {
+  final String? status;
+
+  const _TitleSection({this.status});
+
+  String _subtitleText() {
+    if (status == "pending_review") {
+      return "Your veterinary clinic is under review. Our admins will review it within a couple of hours.";
+    }
+    return "Your veterinary clinic has been successfully registered. "
+        "Share this code with your staff to give them access.";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -87,8 +126,7 @@ class _TitleSection extends StatelessWidget {
         Text("You're all set!", style: AppFonts.bold(fontSize: 26)),
         12.height,
         Text(
-          "Your veterinary clinic has been successfully registered and is now under review. "
-          "Share this code with your staff to give them access.",
+          _subtitleText(),
           textAlign: TextAlign.center,
           style: AppFonts.regular(fontSize: 14, color: AppColors.darkGrey),
         ),
@@ -154,9 +192,7 @@ class _CopyButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: () {
         Clipboard.setData(ClipboardData(text: code));
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text("Clinic code copied")));
+        AppToast.success(context, "Clinic code copied");
       },
       child: Container(
         width: double.infinity,

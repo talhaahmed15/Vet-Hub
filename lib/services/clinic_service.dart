@@ -14,6 +14,7 @@ class ClinicService {
   /// Add a new clinic
   Future<Clinic?> addClinic(Clinic clinic) async {
     try {
+      log('Creating clinic: ${clinic.clinicName ?? ''}');
       final payload = _buildCreateClinicPayload(clinic);
       final response = await _supabase.functions.invoke(
         'create-clinic',
@@ -46,6 +47,7 @@ class ClinicService {
   /// Fetch clinic by clinic code
   Future<Clinic?> getClinicByCode(String clinicCode) async {
     try {
+      log('Fetching clinic by code: $clinicCode');
       final response = await _supabase
           .from('clinics')
           .select()
@@ -63,6 +65,32 @@ class ClinicService {
     }
   }
 
+  /// Update clinic profile details
+  Future<Clinic?> updateClinic({
+    required Clinic clinic,
+  }) async {
+    try {
+      final clinicId = clinic.clinicId;
+      if (clinicId == null || clinicId.isEmpty) {
+        throw "Missing clinic id.";
+      }
+
+      final payload = clinic.toMap()
+        ..['is_certified'] = false;
+
+      final row = await _supabase
+          .from('clinics')
+          .update(payload)
+          .eq('clinic_id', clinicId)
+          .select()
+          .single();
+      return Clinic.fromMap(row);
+    } catch (e) {
+      log('Error updating clinic: $e');
+      rethrow;
+    }
+  }
+
   Map<String, dynamic> _buildCreateClinicPayload(Clinic clinic) {
     final payload = clinic.toMap();
 
@@ -76,6 +104,12 @@ class ClinicService {
     if (certificatePath != null && !_isRemotePath(certificatePath)) {
       payload['certificate_file'] = _encodeFile(certificatePath);
       payload['certificate_url'] = null;
+    }
+
+    final paymentProofPath = clinic.paymentProofUrl;
+    if (paymentProofPath != null && !_isRemotePath(paymentProofPath)) {
+      payload['payment_proof_file'] = _encodeFile(paymentProofPath);
+      payload['payment_proof_url'] = null;
     }
 
     return payload;

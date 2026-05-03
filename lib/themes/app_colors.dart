@@ -9,8 +9,12 @@ class AppColors {
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
   static const grey = Color(0xFF9E9E9E);
+  static const verylightGrey = Color(0xFFF5F5F5);
+  static const iosBg = Color(0xFFF2F2F7);
+
   static const lightGrey = Color(0xFFF5F5F5);
   static const darkGrey = Color(0xFF616161);
+  static const greyBlue = Color(0xFF3D6FA3);
 
   // Status
   static const success = Color(0xFF4CAF50);

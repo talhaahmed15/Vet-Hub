@@ -31,11 +31,17 @@ const ClinicSchema = z.object({
   opening_time: z.string().optional(),
   closing_time: z.string().optional(),
   is_certified: z.boolean().optional(),
+  package_id: z.string().uuid().optional(),
+  package_key: z.string().min(1).optional(),
+  clinic_status: z.string().min(1).optional(),
+  payment_proof_url: z.string().url().nullable().optional(),
   logo_file: FileSchema.optional(),
   certificate_file: FileSchema.optional(),
+  payment_proof_file: FileSchema.optional(),
 });
 
 const BUCKET_NAME = "Clinic's Data";
+const DEFAULT_PACKAGE_KEY = "trial";
 
 type ClinicPayload = z.infer<typeof ClinicSchema>;
 
@@ -130,8 +136,60 @@ Deno.serve(async (req) => {
   const {
     logo_file,
     certificate_file,
+    payment_proof_file,
+    package_key,
+    package_id,
     ...insertPayload
   } = body;
+
+  const packageLookup = package_id
+    ? await supabase
+        .from("packages")
+        .select()
+        .eq("package_id", package_id)
+        .eq("is_active", true)
+        .maybeSingle()
+    : await supabase
+        .from("packages")
+        .select()
+        .eq("package_key", package_key ?? DEFAULT_PACKAGE_KEY)
+        .eq("is_active", true)
+        .maybeSingle();
+
+  if (packageLookup.error) {
+    return new Response(
+      JSON.stringify({ ok: false, error: packageLookup.error.message }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  const selectedPackage = packageLookup.data;
+  if (!selectedPackage) {
+    return new Response(
+      JSON.stringify({ ok: false, error: "Package not found" }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  const now = new Date();
+  const trialDays = Number(selectedPackage.trial_days ?? 0);
+  const isTrial = trialDays > 0;
+  const trialEndAt = isTrial
+    ? new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000)
+    : null;
+
+  insertPayload.package_id = selectedPackage.package_id;
+  insertPayload.package_status = "active";
+  insertPayload.clinic_status = insertPayload.clinic_status ?? "pending_review";
+  if (trialEndAt) {
+    insertPayload.trial_end_at = trialEndAt.toISOString();
+  }
 
   const { data: inserted, error: insertError } = await supabase
     .from("clinics")
@@ -227,6 +285,39 @@ Deno.serve(async (req) => {
     }
   }
 
+  if (payment_proof_file) {
+    const proofPath = buildStoragePath(
+      baseFolder,
+      "payments",
+      "payment_proof",
+      payment_proof_file.name,
+    );
+    const uploadError = await uploadFile(
+      supabase,
+      proofPath,
+      payment_proof_file,
+    );
+    if (uploadError) {
+      return new Response(
+        JSON.stringify({ ok: false, error: uploadError }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+    const signed = await supabase.storage
+      .from(BUCKET_NAME)
+      .createSignedUrl(proofPath, 60 * 60 * 24 * 7);
+    if (signed.data?.signedUrl) {
+      updates.payment_proof_url = signed.data.signedUrl;
+    } else {
+      updates.payment_proof_url = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(proofPath).data.publicUrl;
+    }
+  }
+
   if (Object.keys(updates).length > 0) {
     const { data: updatedRow, error: updateError } = await supabase
       .from("clinics")
@@ -246,6 +337,27 @@ Deno.serve(async (req) => {
     }
 
     updated = updatedRow;
+  }
+
+  const { error: subscriptionError } = await supabase
+    .from("clinic_subscriptions")
+    .insert({
+      clinic_id: inserted.clinic_id,
+      package_id: selectedPackage.package_id,
+      status: "active",
+      starts_at: now.toISOString(),
+      ends_at: trialEndAt ? trialEndAt.toISOString() : null,
+      is_trial: isTrial,
+    });
+
+  if (subscriptionError) {
+    return new Response(
+      JSON.stringify({ ok: false, error: subscriptionError.message }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 
   return new Response(JSON.stringify({ ok: true, clinic: updated }), {

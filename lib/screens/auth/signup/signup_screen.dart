@@ -163,7 +163,7 @@ class _NameInput extends StatelessWidget {
         const SizedBox(height: 4),
         CustomTextField(
           controller: state.nameController,
-          hint: 'John Doe',
+          hintText: 'John Doe',
           keyboardType: TextInputType.name,
           isDark: isDark,
         ),
@@ -193,7 +193,7 @@ class _EmailInput extends StatelessWidget {
         const SizedBox(height: 4),
         CustomTextField(
           controller: state.emailController,
-          hint: 'name@clinic.com',
+          hintText: 'name@clinic.com',
           keyboardType: TextInputType.emailAddress,
           isDark: isDark,
         ),
@@ -223,7 +223,7 @@ class _PasswordInput extends StatelessWidget {
         const SizedBox(height: 4),
         CustomTextField(
           controller: state.passwordController,
-          hint: 'At least 8 characters',
+          hintText: 'At least 8 characters',
           keyboardType: TextInputType.text,
           isDark: isDark,
           obscureText: true,

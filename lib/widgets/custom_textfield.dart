@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
-  final String hint;
+  final String hintText;
   final TextInputType? keyboardType;
   final bool isDark;
   final bool obscureText;
@@ -17,11 +17,12 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final Function()? onTap;
   final String? Function(String?)? validator;
+  final TextInputAction? textInputAction;
 
   const CustomTextField({
     super.key,
     this.controller,
-    required this.hint,
+    required this.hintText,
     this.keyboardType,
     this.isDark = false,
     this.obscureText = false,
@@ -34,6 +35,7 @@ class CustomTextField extends StatefulWidget {
     this.onTap,
     this.validator,
     this.focusNode,
+    this.textInputAction,
   });
 
   @override
@@ -63,6 +65,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator,
       onTap: widget.onTap,
       onChanged: widget.onChanged,
+      textInputAction: widget.textInputAction,
       style: AppFonts.regular(
         color: widget.isDark ? AppColors.white : AppColors.black,
         fontSize: 12,
@@ -70,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       cursorColor: AppColors.black,
       cursorErrorColor: AppColors.error,
       decoration: _inputDecoration(
-        hint: widget.hint,
+        hint: widget.hintText,
         isDark: widget.isDark,
         suffix: _buildSuffixIcon(),
         prefixIcon: widget.prefixIcon,

@@ -52,6 +52,13 @@ class ReviewStep extends StatelessWidget {
                 .replaceAll(']', ""),
             icon: Icons.schedule_outlined,
           ),
+          _ReviewTile(
+            title: "Package",
+            subtitle: formData.packageName ??
+                formData.packageKey ??
+                "Not selected",
+            icon: Icons.workspace_premium_outlined,
+          ),
 
           8.height,
           Container(

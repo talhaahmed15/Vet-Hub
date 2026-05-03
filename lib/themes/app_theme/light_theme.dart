@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LightTheme {
   static ThemeData theme = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: AppColors.white,
+    scaffoldBackgroundColor: AppColors.iosBg,
     primaryColor: AppColors.secondary,
 
     appBarTheme: const AppBarTheme(
@@ -16,6 +16,37 @@ class LightTheme {
     textTheme: const TextTheme(
       headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(fontSize: 14),
+    ),
+
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: AppColors.primary,
+      strokeWidth: 2,
+    ),
+
+    dividerTheme: DividerThemeData(color: AppColors.divider),
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.white,
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(AppColors.white),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        elevation: const WidgetStatePropertyAll(8),
+        padding: const WidgetStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 4),
+        ),
+      ),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+      inputDecorationTheme: const InputDecorationTheme(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        border: OutlineInputBorder(borderSide: BorderSide.none),
+      ),
     ),
 
     // inputDecorationTheme: InputDecorationTheme(
