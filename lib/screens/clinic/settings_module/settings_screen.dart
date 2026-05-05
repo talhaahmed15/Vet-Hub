@@ -10,6 +10,7 @@ import 'package:clinic_management_app/services/storage.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             backgroundColor: AppColors.white,
-            body: const Center(child: CircularProgressIndicator()),
+            body: PageContent(
+              maxWidth: 800,
+              child: const Center(child: CircularProgressIndicator()),
+            ),
           );
         }
 
@@ -55,10 +59,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         return Scaffold(
           backgroundColor: AppColors.white,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+          body: PageContent(
+            maxWidth: 800,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _ClinicHeader(clinic: clinic, member: member),
@@ -151,6 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
+            ),
           ),
         );
       },
@@ -193,14 +200,14 @@ class _ClinicHeader extends StatelessWidget {
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 16),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 16),
         ],
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 32,
-            backgroundColor: AppColors.primary.withOpacity(0.15),
+            backgroundColor: AppColors.primary.withValues(alpha: 0.15),
             child: const Icon(Icons.pets, size: 28, color: AppColors.primary),
           ),
           16.width,
@@ -296,7 +303,7 @@ class _SettingsTile extends StatelessWidget {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
@@ -404,9 +411,9 @@ class _SignOutButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: Colors.red.withOpacity(0.08),
+            color: Colors.red.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.red.withOpacity(0.2)),
+            border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

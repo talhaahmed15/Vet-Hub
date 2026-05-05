@@ -1,4 +1,5 @@
 import 'package:clinic_management_app/widgets/app_input.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,11 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
+      body: PageContent(
+        maxWidth: 480,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
           children: [
             Align(
               alignment: Alignment.centerLeft,
@@ -40,6 +43,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               child: const Text('Remember password? Log In'),
             ),
           ],
+        ),
         ),
       ),
     );

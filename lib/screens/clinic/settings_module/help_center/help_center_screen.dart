@@ -1,5 +1,6 @@
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,11 @@ class HelpCenterScreen extends StatelessWidget {
         title: Text("Help Center", style: AppFonts.semiBold(fontSize: 18)),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      body: PageContent(
+        maxWidth: 800,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _HelpHeader(),
@@ -53,6 +56,7 @@ class HelpCenterScreen extends StatelessWidget {
             32.height,
             _SupportFooter(),
           ],
+          ),
         ),
       ),
     );
@@ -65,7 +69,7 @@ class _HelpHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
+        color: AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -113,7 +117,7 @@ class _HelpTile extends StatelessWidget {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppColors.primary),

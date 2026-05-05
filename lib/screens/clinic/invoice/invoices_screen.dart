@@ -6,6 +6,7 @@ import 'package:clinic_management_app/screens/clinic/invoice/invoice_details_scr
 import 'package:clinic_management_app/screens/clinic/invoice/invoice_summary_screen.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -44,10 +45,13 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: AppColors.white),
       ),
-      body: SafeArea(
-        bottom: false,
+      body: PageContent(
+        maxWidth: 1200,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
           child: Column(
-          children: [
+            children: [
             _Header(isDark: isDark),
             Expanded(
               child: BlocBuilder<InvoiceCubit, InvoiceState>(
@@ -88,6 +92,7 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -236,7 +241,7 @@ class _InvoiceRow extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: AppColors.divider.withOpacity(0.8)),
+            bottom: BorderSide(color: AppColors.divider.withValues(alpha: 0.8)),
           ),
         ),
         child: Row(
@@ -245,7 +250,7 @@ class _InvoiceRow extends StatelessWidget {
               height: 46,
               width: 46,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.12),
+                color: AppColors.primary.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Icon(Icons.receipt_long, color: AppColors.primary),
@@ -268,7 +273,7 @@ class _InvoiceRow extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: statusColor.withOpacity(0.14),
+                          color: statusColor.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(

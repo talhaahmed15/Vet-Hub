@@ -7,6 +7,7 @@ import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/icon_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,12 +81,15 @@ class _ConditionScreenState extends State<ConditionScreen> {
           );
         },
       ),
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: Form(
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: Form(
                 key: _formKey,
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 120),
@@ -161,7 +165,7 @@ class _ConditionScreenState extends State<ConditionScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withOpacity(0.12),
+                                  color: AppColors.primary.withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(999),
                                 ),
                                 child: Text(
@@ -240,6 +244,7 @@ class _ConditionScreenState extends State<ConditionScreen> {
               ),
             ),
           ],
+          ),
         ),
       ),
     );
@@ -290,7 +295,7 @@ class _Chip extends StatelessWidget {
         ? tone
         : (isDark ? const Color(0xFF2A3A4C) : const Color(0xFFE5E7EB));
     final bgColor = selected
-        ? tone.withOpacity(isDark ? 0.22 : 0.14)
+        ? tone.withValues(alpha: isDark ? 0.22 : 0.14)
         : (isDark ? const Color(0xFF121E2A) : AppColors.white);
     final textColor = selected
         ? tone

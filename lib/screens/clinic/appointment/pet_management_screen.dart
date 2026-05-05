@@ -8,6 +8,7 @@ import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_dropdown_field.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,8 +42,11 @@ class _PetManagementView extends StatelessWidget {
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: AppColors.white),
       ),
-      body: SafeArea(
-        child: BlocConsumer<PetManagementBloc, PetManagementState>(
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          child: BlocConsumer<PetManagementBloc, PetManagementState>(
           listener: (context, state) {
             if (state is PetManagementFailure) {
               AppToast.error(context, state.message);
@@ -112,6 +116,7 @@ class _PetManagementView extends StatelessWidget {
           },
         ),
       ),
+      ),
     );
   }
 
@@ -159,7 +164,7 @@ class _PetRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.12),
+          color: AppColors.primary.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -178,7 +183,7 @@ class _PetRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         alignment: Alignment.centerRight,
         decoration: BoxDecoration(
-          color: AppColors.error.withOpacity(0.12),
+          color: AppColors.error.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -207,7 +212,7 @@ class _PetRow extends StatelessWidget {
               height: 42,
               width: 42,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.12),
+                color: AppColors.primary.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(Icons.pets, color: AppColors.primary),

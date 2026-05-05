@@ -7,6 +7,7 @@ import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_dropdown_field.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -159,9 +160,12 @@ class _ClinicMembersScreenState extends State<ClinicMembersScreen> {
           icon: const Icon(Icons.refresh),
         ),
       ),
-      body: FutureBuilder<List<ClinicMember>>(
-        future: _membersFuture,
-        builder: (context, snapshot) {
+      body: PageContent(
+        maxWidth: 800,
+        fillHeight: true,
+        child: FutureBuilder<List<ClinicMember>>(
+          future: _membersFuture,
+          builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -198,7 +202,7 @@ class _ClinicMembersScreenState extends State<ClinicMembersScreen> {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      backgroundColor: AppColors.primary.withOpacity(0.12),
+                      backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                       child: Text(
                         member.fullName.isNotEmpty
                             ? member.fullName.substring(0, 1).toUpperCase()
@@ -257,6 +261,7 @@ class _ClinicMembersScreenState extends State<ClinicMembersScreen> {
             },
           );
         },
+        ),
       ),
     );
   }
@@ -277,9 +282,9 @@ class _StatusPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         label,

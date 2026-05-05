@@ -1,3 +1,4 @@
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
@@ -24,9 +25,11 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
+      body: PageContent(
+        maxWidth: 480,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
           children: [
             Align(
               alignment: Alignment.centerLeft,
@@ -68,6 +71,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
             PrimaryButton(text: 'Verify Account', onPressed: widget.onVerify),
             TextButton(onPressed: () {}, child: const Text('Resend OTP')),
           ],
+        ),
         ),
       ),
     );

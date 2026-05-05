@@ -7,6 +7,7 @@ import 'package:clinic_management_app/themes/app_consts.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_dropdown_field.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,11 +62,14 @@ class _FilterAppointmentsScreenState extends State<FilterAppointmentsScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF101922) : AppColors.white,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            _TopBar(
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              _TopBar(
               onClose: () => NavigatorHelper.pop(context),
               onReset: _resetFilters,
             ),
@@ -162,6 +166,7 @@ class _FilterAppointmentsScreenState extends State<FilterAppointmentsScreen> {
               },
             ),
           ],
+          ),
         ),
       ),
     );
@@ -374,7 +379,7 @@ class _SpeciesRow extends StatelessWidget {
           ? AppColors.primary
           : (isDark ? const Color(0xFF223042) : AppColors.divider);
       final bg = isSelected
-          ? AppColors.primary.withOpacity(isDark ? 0.14 : 0.08)
+          ? AppColors.primary.withValues(alpha: isDark ? 0.14 : 0.08)
           : (isDark ? const Color(0xFF141E2A) : AppColors.white);
       final fg = isSelected
           ? AppColors.primary
@@ -453,7 +458,7 @@ class _BillingSegment extends StatelessWidget {
               boxShadow: selected
                   ? [
                       BoxShadow(
-                        color: Colors.black.withOpacity(isDark ? 0.25 : 0.06),
+                        color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.06),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),

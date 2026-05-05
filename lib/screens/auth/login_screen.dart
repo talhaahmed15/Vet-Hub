@@ -132,29 +132,34 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SafeArea(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      12.height,
-                      _ClinicHeader(clinic: widget.clinic),
-                      12.height,
-                      Divider(color: AppColors.lightGrey),
-                      12.height,
-                      _WelcomeText(),
-                      32.height,
-                      _UsernameInput(),
-                      16.height,
-                      _PasswordInput(),
-                      32.height,
-                      _SignInButton(isLoading: state is LoginLoading),
-                      32.height,
-                      _DividerText(),
-                      32.height,
-                      _SocialButtons(),
-                      16.height,
-                      _FooterSection(clinic: widget.clinic),
-                      24.height,
-                    ],
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 480),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          12.height,
+                          _ClinicHeader(clinic: widget.clinic),
+                          12.height,
+                          Divider(color: AppColors.lightGrey),
+                          12.height,
+                          _WelcomeText(),
+                          32.height,
+                          _UsernameInput(),
+                          16.height,
+                          _PasswordInput(),
+                          32.height,
+                          _SignInButton(isLoading: state is LoginLoading),
+                          32.height,
+                          _DividerText(),
+                          32.height,
+                          _SocialButtons(),
+                          16.height,
+                          _FooterSection(clinic: widget.clinic),
+                          24.height,
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -190,7 +195,7 @@ class _ClinicHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.15),
+              color: AppColors.primary.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
             child: SizedBox(

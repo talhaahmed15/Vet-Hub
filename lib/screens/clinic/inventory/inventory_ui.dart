@@ -61,7 +61,7 @@ class InventorySectionHeader extends StatelessWidget {
             label.toUpperCase(),
             style: AppFonts.bold(
               fontSize: 12,
-              color: AppColors.darkGrey.withOpacity(0.8),
+              color: AppColors.darkGrey.withValues(alpha: 0.8),
               letterSpacing: 0.8,
             ),
           ),

@@ -30,10 +30,10 @@ class SocialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveBackground = isEnabled
         ? backgroundColor
-        : AppColors.disabled.withOpacity(0.5);
+        : AppColors.disabled.withValues(alpha: 0.5);
     final effectiveTextColor = isEnabled
         ? textColor
-        : AppColors.white.withOpacity(0.7);
+        : AppColors.white.withValues(alpha: 0.7);
     final effectiveBorder = borderColor != null
         ? (isEnabled ? BorderSide(color: borderColor!) : BorderSide.none)
         : BorderSide.none;

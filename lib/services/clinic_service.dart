@@ -116,6 +116,9 @@ class ClinicService {
   }
 
   Map<String, String> _encodeFile(String path) {
+    if (path.startsWith('data:')) {
+      return _encodeDataUri(path);
+    }
     final file = File(path);
     if (!file.existsSync()) {
       throw "File not found: $path";
@@ -126,6 +129,26 @@ class ClinicService {
       'name': _fileName(path),
       'content_type': _contentTypeFromExtension(extension),
       'data_base64': base64Encode(bytes),
+    };
+  }
+
+  Map<String, String> _encodeDataUri(String dataUri) {
+    final commaIdx = dataUri.indexOf(',');
+    final header = dataUri.substring(5, commaIdx); // strip "data:"
+    final base64Data = dataUri.substring(commaIdx + 1);
+    final parts = header.split(';');
+    final mime = parts[0];
+    String name = 'file';
+    for (final part in parts.skip(1)) {
+      if (part.startsWith('name=')) {
+        name = part.substring(5);
+        break;
+      }
+    }
+    return {
+      'name': name,
+      'content_type': mime,
+      'data_base64': base64Data,
     };
   }
 
@@ -142,7 +165,9 @@ class ClinicService {
   }
 
   bool _isRemotePath(String path) {
-    return path.startsWith('http://') || path.startsWith('https://');
+    return path.startsWith('http://') ||
+        path.startsWith('https://') ||
+        path.startsWith('blob:');
   }
 
   String _fileExtension(String? path) {

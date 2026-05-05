@@ -38,7 +38,7 @@ class PrimaryIconButton extends StatelessWidget {
         foregroundColor ?? AppColors.white;
     final resolvedShadowColor = shadowColor ??
         (isEnabled
-            ? resolvedBackgroundColor.withOpacity(0.6)
+            ? resolvedBackgroundColor.withValues(alpha: 0.6)
             : Colors.transparent);
     final buttonColor =
         isEnabled ? resolvedBackgroundColor : resolvedDisabledColor;

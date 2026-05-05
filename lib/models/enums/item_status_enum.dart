@@ -22,13 +22,13 @@ extension InventoryStatusX on InventoryStatus {
     InventoryStatus.outOfStock => const Color(0xFFFFE9E9),
   };
 
-  Color get border => foreground.withOpacity(0.2);
+  Color get border => foreground.withValues(alpha: 0.2);
 
-  String trailingLabel(double minThreshold) => switch (this) {
-    InventoryStatus.lowStock => 'Min: ${formatQuantity(minThreshold)}',
-    InventoryStatus.inStock => 'Stock OK',
-    InventoryStatus.outOfStock => 'Reorder',
-  };
+  // String trailingLabel(double minThreshold) => switch (this) {
+  //   InventoryStatus.lowStock => 'Min: ${formatQuantity(minThreshold)}',
+  //   InventoryStatus.inStock => 'Stock OK',
+  //   InventoryStatus.outOfStock => 'Reorder',
+  // };
 }
 
 InventoryStatus statusFor(double onHand, double minThreshold) {

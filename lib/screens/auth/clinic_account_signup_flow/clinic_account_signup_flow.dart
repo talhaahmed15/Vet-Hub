@@ -9,6 +9,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -166,39 +167,43 @@ class _ClinicAccountSignupFlowState extends State<ClinicAccountSignupFlow> {
                   ],
                 ),
               ),
-              body: SafeArea(
-                child: Column(
-                  children: [
-                    _ProgressHeader(
-                      step: _currentStep,
-                      total: _formKeys.length,
-                    ),
-                    Expanded(
-                      child: IndexedStack(
-                        index: _currentStep,
-                        children: [
-                          _AccountInfoStep(
-                            formKey: _infoFormKey,
-                            fullNameController: _fullNameController,
-                            usernameController: _usernameController,
-                            phoneController: _phoneController,
-                          ),
-                          _RoleStep(
-                            formKey: _roleFormKey,
-                            role: _role,
-                            onRoleChanged: (role) =>
-                                setState(() => _role = role),
-                          ),
-                          _SecurityStep(
-                            formKey: _securityFormKey,
-                            passwordController: _passwordController,
-                            confirmPasswordController:
-                                _confirmPasswordController,
-                          ),
-                        ],
+              body: PageContent(
+                maxWidth: 480,
+                fillHeight: true,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      _ProgressHeader(
+                        step: _currentStep,
+                        total: _formKeys.length,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: IndexedStack(
+                          index: _currentStep,
+                          children: [
+                            _AccountInfoStep(
+                              formKey: _infoFormKey,
+                              fullNameController: _fullNameController,
+                              usernameController: _usernameController,
+                              phoneController: _phoneController,
+                            ),
+                            _RoleStep(
+                              formKey: _roleFormKey,
+                              role: _role,
+                              onRoleChanged: (role) =>
+                                  setState(() => _role = role),
+                            ),
+                            _SecurityStep(
+                              formKey: _securityFormKey,
+                              passwordController: _passwordController,
+                              confirmPasswordController:
+                                  _confirmPasswordController,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -373,7 +378,7 @@ class _RoleStep extends StatelessWidget {
                   label: Text(roleItem.label),
                   selected: isSelected,
                   onSelected: (_) => onRoleChanged(roleItem),
-                  selectedColor: AppColors.primary.withOpacity(0.15),
+                  selectedColor: AppColors.primary.withValues(alpha: 0.15),
                   labelStyle: AppFonts.semiBold(
                     fontSize: 12,
                     color: isSelected ? AppColors.primary : AppColors.darkGrey,

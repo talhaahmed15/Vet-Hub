@@ -3,6 +3,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/outline_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -36,39 +37,42 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: isDark ? AppColors.black : AppColors.white,
 
       appBar: CustomAppBar(title: "Signup"),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              24.height,
-              _TitleSection(),
-              32.height,
-              _NameInput(),
-              16.height,
-              _EmailInput(),
-              16.height,
-              _PasswordInput(),
-              16.height,
-              _TermsCheckbox(
-                agreeToTerms: agreeToTerms,
-                onChanged: (val) => setState(() => agreeToTerms = val ?? false),
-              ),
-              const SizedBox(height: 24),
-              PrimaryButton(text: "Create Account", onPressed: () {}),
-              const SizedBox(height: 24),
-              _DividerText(text: "Are you a clinic owner?".toUpperCase()),
-              16.height,
-              PrimaryOutlinedButton(
-                text: "Register your Clinic",
-                onPressed: () {},
-                isEnabled: true,
-              ),
-              const SizedBox(height: 32),
-              // _FooterSection(),
-              // const SizedBox(height: 24),
-            ],
+      body: PageContent(
+        maxWidth: 480,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                24.height,
+                _TitleSection(),
+                32.height,
+                _NameInput(),
+                16.height,
+                _EmailInput(),
+                16.height,
+                _PasswordInput(),
+                16.height,
+                _TermsCheckbox(
+                  agreeToTerms: agreeToTerms,
+                  onChanged: (val) => setState(() => agreeToTerms = val ?? false),
+                ),
+                const SizedBox(height: 24),
+                PrimaryButton(text: "Create Account", onPressed: () {}),
+                const SizedBox(height: 24),
+                _DividerText(text: "Are you a clinic owner?".toUpperCase()),
+                16.height,
+                PrimaryOutlinedButton(
+                  text: "Register your Clinic",
+                  onPressed: () {},
+                  isEnabled: true,
+                ),
+                const SizedBox(height: 32),
+                // _FooterSection(),
+                // const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

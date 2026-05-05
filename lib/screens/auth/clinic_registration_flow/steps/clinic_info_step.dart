@@ -22,6 +22,14 @@ class ClinicInfoStep extends StatefulWidget {
 class _ClinicInfoStepState extends State<ClinicInfoStep> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final titleColor =
+        isDark ? Colors.white.withValues(alpha: 0.9) : AppColors.black;
+    final subtitleColor =
+        isDark ? Colors.white.withValues(alpha: 0.45) : AppColors.grey;
+    final labelColor =
+        isDark ? Colors.white.withValues(alpha: 0.65) : AppColors.black;
+
     return Form(
       key: widget.formKey,
       autovalidateMode: AutovalidateMode.disabled,
@@ -30,16 +38,18 @@ class _ClinicInfoStepState extends State<ClinicInfoStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Clinic Information", style: AppFonts.bold(fontSize: 22)),
+            Text(
+              "Clinic Information",
+              style: AppFonts.bold(fontSize: 24, color: titleColor),
+            ),
             4.height,
             Text(
               "Tell us a bit about your practice to get started.",
-              style: AppFonts.regular(color: AppColors.grey, fontSize: 14),
+              style: AppFonts.regular(color: subtitleColor, fontSize: 15),
             ),
             24.height,
 
-            /// Clinic Name
-            Text('Clinic Name', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Clinic Name', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "e.g., Happy Paws Veterinary",
@@ -52,14 +62,11 @@ class _ClinicInfoStepState extends State<ClinicInfoStep> {
                 }
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.clinicName = val;
-              },
+              onChanged: (val) => widget.formData.clinicName = val,
             ),
             16.height,
 
-            /// Address
-            Text('Clinic Address', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Clinic Address', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "123 Vet Street, City, State",
@@ -71,14 +78,11 @@ class _ClinicInfoStepState extends State<ClinicInfoStep> {
                 }
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.clinicAddress = val;
-              },
+              onChanged: (val) => widget.formData.clinicAddress = val,
             ),
             16.height,
 
-            /// Contact
-            Text('Contact Number', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Contact Number', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "+1 (555) 000-0000",
@@ -93,14 +97,11 @@ class _ClinicInfoStepState extends State<ClinicInfoStep> {
                 }
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.contactNumber = val;
-              },
+              onChanged: (val) => widget.formData.contactNumber = val,
             ),
             16.height,
 
-            /// Website
-            Text('Website', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Website (Optional)', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "www.happypaws.com",
@@ -113,11 +114,8 @@ class _ClinicInfoStepState extends State<ClinicInfoStep> {
                 }
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.website = val;
-              },
+              onChanged: (val) => widget.formData.website = val,
             ),
-            16.height,
 
             32.height,
           ],

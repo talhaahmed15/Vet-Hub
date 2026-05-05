@@ -7,6 +7,7 @@ import 'package:clinic_management_app/screens/clinic/clinic_root.dart';
 import 'package:clinic_management_app/services/auth_service.dart';
 import 'package:clinic_management_app/services/storage.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -119,8 +120,11 @@ class _AppStartScreenState extends State<AppStartScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.white,
-        body: Center(
-          child: const CircularProgressIndicator(),
+        body: PageContent(
+          maxWidth: 480,
+          child: Center(
+            child: const CircularProgressIndicator(),
+          ),
         ),
       ),
     );

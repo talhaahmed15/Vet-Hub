@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:clinic_management_app/models/clinic_model.dart';
@@ -7,6 +8,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/outline_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class ClinicBrandingStep extends StatefulWidget {
@@ -31,41 +33,57 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
     required void Function(String path) onFieldChanged,
   }) async {
     final path = await _imageService.pickImageFromGallery();
-    if (path == null || path.isEmpty) {
-      return;
-    }
-    setState(() {
-      onSelected(path);
-    });
+    if (path == null || path.isEmpty) return;
+    setState(() => onSelected(path));
     onFieldChanged(path);
   }
 
-  Widget _imagePreview(String? path) {
+  Widget _imagePreview(String? path, bool isDark) {
     final hasPath = path != null && path.isNotEmpty;
-    final isRemote = hasPath &&
-        (path.startsWith('http://') || path.startsWith('https://'));
+    final isRemote =
+        hasPath && (path.startsWith('http://') || path.startsWith('https://'));
+    final isDataUri = hasPath && path.startsWith('data:');
+
+    Widget? imageWidget;
+    if (hasPath) {
+      if (isDataUri) {
+        final commaIdx = path.indexOf(',');
+        final base64Data = path.substring(commaIdx + 1);
+        imageWidget = Image.memory(base64Decode(base64Data), fit: BoxFit.cover);
+      } else if (isRemote || kIsWeb) {
+        imageWidget = Image.network(path, fit: BoxFit.cover);
+      } else {
+        imageWidget = Image.file(File(path), fit: BoxFit.cover);
+      }
+    }
 
     return Container(
       height: 140,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.divider.withOpacity(0.3),
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.06)
+            : AppColors.divider.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.14)
+              : AppColors.divider,
+        ),
       ),
-      child: hasPath
+      child: imageWidget != null
           ? ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: isRemote
-                  ? Image.network(path, fit: BoxFit.cover)
-                  : Image.file(File(path), fit: BoxFit.cover),
+              child: imageWidget,
             )
           : Center(
               child: Text(
                 "No image selected",
                 style: AppFonts.regular(
-                  fontSize: 12,
-                  color: AppColors.grey,
+                  fontSize: 14,
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.3)
+                      : AppColors.grey,
                 ),
               ),
             ),
@@ -74,6 +92,14 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final titleColor =
+        isDark ? Colors.white.withValues(alpha: 0.9) : AppColors.black;
+    final subtitleColor =
+        isDark ? Colors.white.withValues(alpha: 0.45) : AppColors.grey;
+    final labelColor =
+        isDark ? Colors.white.withValues(alpha: 0.65) : AppColors.black;
+
     return Form(
       key: widget.formKey,
       autovalidateMode: AutovalidateMode.disabled,
@@ -82,16 +108,18 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Clinic Branding", style: AppFonts.bold(fontSize: 22)),
+            Text(
+              "Clinic Branding",
+              style: AppFonts.bold(fontSize: 24, color: titleColor),
+            ),
             4.height,
             Text(
               "Customize how your clinic appears to patients.",
-              style: AppFonts.regular(color: AppColors.grey, fontSize: 14),
+              style: AppFonts.regular(color: subtitleColor, fontSize: 15),
             ),
             24.height,
 
-            /// Clinic Logo
-            Text('Clinic Logo', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Clinic Logo', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             8.height,
             FormField<String>(
               initialValue: widget.formData.logoUrl,
@@ -105,22 +133,20 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _imagePreview(field.value),
+                    _imagePreview(field.value, isDark),
                     8.height,
                     Row(
                       children: [
                         Expanded(
                           child: PrimaryOutlinedButton(
                             onPressed: () => _pickImage(
-                              onSelected: (path) {
-                                widget.formData.logoUrl = path;
-                              },
+                              onSelected: (path) =>
+                                  widget.formData.logoUrl = path,
                               onFieldChanged: field.didChange,
                             ),
-                            text:
-                                field.value?.isNotEmpty == true
-                                    ? "Change Clinic Logo"
-                                    : "Select Clinic Logo",
+                            text: field.value?.isNotEmpty == true
+                                ? "Change Clinic Logo"
+                                : "Select Clinic Logo",
                           ),
                         ),
                       ],
@@ -131,8 +157,10 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
                         child: Text(
                           field.errorText ?? "",
                           style: AppFonts.regular(
-                            fontSize: 10,
-                            color: AppColors.error,
+                            fontSize: 12,
+                            color: isDark
+                                ? const Color(0xFFFF5252)
+                                : AppColors.error,
                           ),
                         ),
                       ),
@@ -142,25 +170,19 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
             ),
             16.height,
 
-            /// Tagline
-            Text('Clinic Tagline', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Clinic Tagline', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "Caring for pets, one visit at a time",
               validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return "Tagline is required";
-                }
+                if (val == null || val.isEmpty) return "Tagline is required";
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.tagLine = val;
-              },
+              onChanged: (val) => widget.formData.tagLine = val,
             ),
             16.height,
 
-            /// About
-            Text('About Clinic', style: AppFonts.semiBold(fontSize: 12)),
+            Text('About Clinic', style: AppFonts.semiBold(fontSize: 14, color: labelColor)),
             4.height,
             CustomTextField(
               hintText: "Brief description of your clinic",
@@ -171,10 +193,9 @@ class _ClinicBrandingStepState extends State<ClinicBrandingStep> {
                 }
                 return null;
               },
-              onChanged: (val) {
-                widget.formData.aboutClinic = val;
-              },
+              onChanged: (val) => widget.formData.aboutClinic = val,
             ),
+            32.height,
           ],
         ),
       ),

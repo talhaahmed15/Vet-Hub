@@ -10,6 +10,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/icon_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:printing/printing.dart';
@@ -41,11 +42,14 @@ class AppointmentSuccessScreen extends StatelessWidget {
               ),
               title: 'Appointment Status',
             ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
+            body: PageContent(
+              maxWidth: 700,
+              fillHeight: true,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
                       padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
                       children: [
                         BlocBuilder<AppointmentFlowCubit, AppointmentFlowState>(
@@ -327,6 +331,7 @@ class AppointmentSuccessScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+                ),
               ),
             ),
           ),
@@ -344,7 +349,7 @@ class _Celebration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = success
-        ? AppColors.primary.withOpacity(0.12)
+        ? AppColors.primary.withValues(alpha: 0.12)
         : (isDark ? const Color(0xFF2A3A4C) : const Color(0xFFE2E8F0));
     final iconColor = success ? AppColors.primary : AppColors.darkGrey;
 

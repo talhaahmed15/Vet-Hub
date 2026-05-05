@@ -8,6 +8,7 @@ import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -77,12 +78,15 @@ class _JoinClinicOtpScreenState extends State<JoinClinicOtpScreen> {
           return Scaffold(
             backgroundColor: AppColors.white,
             appBar: const CustomAppBar(title: "Join Clinic"),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: SingleChildScrollView(
+            body: PageContent(
+              maxWidth: 480,
+              fillHeight: true,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         children: [
@@ -147,6 +151,7 @@ class _JoinClinicOtpScreenState extends State<JoinClinicOtpScreen> {
                     ),
                   ),
                 ],
+              ),
               ),
             ),
           );

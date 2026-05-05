@@ -53,6 +53,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveDark =
+        widget.isDark || Theme.of(context).brightness == Brightness.dark;
+
     return TextFormField(
       controller: widget.controller,
       focusNode: widget.focusNode,
@@ -67,35 +70,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
       onChanged: widget.onChanged,
       textInputAction: widget.textInputAction,
       style: AppFonts.regular(
-        color: widget.isDark ? AppColors.white : AppColors.black,
-        fontSize: 12,
+        color: effectiveDark
+            ? Colors.white.withValues(alpha: 0.88)
+            : AppColors.black,
+        fontSize: 14,
       ),
-      cursorColor: AppColors.black,
+      cursorColor: effectiveDark ? AppColors.primary : AppColors.black,
       cursorErrorColor: AppColors.error,
       decoration: _inputDecoration(
         hint: widget.hintText,
-        isDark: widget.isDark,
-        suffix: _buildSuffixIcon(),
+        isDark: effectiveDark,
+        suffix: _buildSuffixIcon(effectiveDark),
         prefixIcon: widget.prefixIcon,
       ),
     );
   }
 
-  Widget? _buildSuffixIcon() {
+  Widget? _buildSuffixIcon(bool isDark) {
     if (widget.obscureText) {
       return IconButton(
         icon: Icon(
           _obscure ? Icons.visibility : Icons.visibility_off,
-          color: AppColors.grey,
+          color: isDark ? Colors.white.withValues(alpha: 0.45) : AppColors.grey,
         ),
-        onPressed: () {
-          setState(() {
-            _obscure = !_obscure;
-          });
-        },
+        onPressed: () => setState(() => _obscure = !_obscure),
       );
     }
-
     return widget.suffixIcon;
   }
 }
@@ -106,29 +106,48 @@ InputDecoration _inputDecoration({
   Widget? suffix,
   Widget? prefixIcon,
 }) {
+  final borderColor = isDark
+      ? Colors.white.withValues(alpha: 0.16)
+      : AppColors.divider;
+
   return InputDecoration(
     hintText: hint,
     suffixIcon: suffix,
     prefixIcon: prefixIcon,
+    prefixIconColor: isDark ? Colors.white.withValues(alpha: 0.4) : null,
     filled: true,
-    fillColor: isDark ? AppColors.darkGrey : AppColors.white,
-    hintStyle: AppFonts.regular(color: AppColors.grey, fontSize: 12),
-    errorStyle: AppFonts.regular(color: AppColors.error, fontSize: 10),
+    fillColor: isDark
+        ? Colors.white.withValues(alpha: 0.08)
+        : AppColors.white,
+    hintStyle: AppFonts.regular(
+      color: isDark
+          ? Colors.white.withValues(alpha: 0.3)
+          : AppColors.grey,
+      fontSize: 14,
+    ),
+    errorStyle: AppFonts.regular(
+      color: isDark ? const Color(0xFFFF5252) : AppColors.error,
+      fontSize: 12,
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
-      borderSide: const BorderSide(color: AppColors.divider),
+      borderSide: BorderSide(color: borderColor),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
-      borderSide: const BorderSide(color: AppColors.divider),
+      borderSide: BorderSide(color: borderColor),
     ),
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
-      borderSide: const BorderSide(color: AppColors.disabled),
+      borderSide: BorderSide(
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.08)
+            : AppColors.disabled,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
-      borderSide: BorderSide(color: AppColors.primary, width: 2),
+      borderSide: const BorderSide(color: AppColors.primary, width: 2),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),

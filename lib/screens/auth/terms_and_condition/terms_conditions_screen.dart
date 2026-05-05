@@ -1,3 +1,4 @@
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,12 @@ class TermsConditionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
+      body: PageContent(
+        maxWidth: 480,
+        fillHeight: true,
+        child: Column(
+          children: [
+            Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,6 +82,7 @@ class TermsConditionsScreen extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

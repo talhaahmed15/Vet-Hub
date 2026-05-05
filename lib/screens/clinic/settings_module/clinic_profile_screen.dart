@@ -9,6 +9,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/selectable_chips.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
@@ -153,7 +154,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
 
     return CircleAvatar(
       radius: 42,
-      backgroundColor: AppColors.primary.withOpacity(0.1),
+      backgroundColor: AppColors.primary.withValues(alpha: 0.1),
       child: hasPath
           ? ClipOval(
               child: isRemote
@@ -250,17 +251,19 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: const CustomAppBar(title: 'Clinic Profile'),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : clinic == null
-              ? Center(
-                  child: Text(
-                    'Clinic not found.',
-                    style: AppFonts.regular(),
-                  ),
-                )
-              : SafeArea(
-                  child: SingleChildScrollView(
+      body: PageContent(
+        maxWidth: 800,
+        child: _loading
+            ? const Center(child: CircularProgressIndicator())
+            : clinic == null
+                ? Center(
+                    child: Text(
+                      'Clinic not found.',
+                      style: AppFonts.regular(),
+                    ),
+                  )
+                : SafeArea(
+                    child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -597,6 +600,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                     ),
                   ),
                 ),
+        ),
     );
   }
 }
@@ -634,7 +638,7 @@ class _SectionLabel extends StatelessWidget {
           ),
         ),
         8.width,
-        Expanded(child: Divider(color: AppColors.divider.withOpacity(0.8))),
+        Expanded(child: Divider(color: AppColors.divider.withValues(alpha: 0.8))),
       ],
     );
   }
@@ -647,9 +651,9 @@ class _InfoBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
+        color: AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -680,9 +684,9 @@ class _StatusBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.25)),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: Row(
         children: [

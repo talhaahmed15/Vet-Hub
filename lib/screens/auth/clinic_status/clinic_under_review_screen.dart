@@ -4,6 +4,7 @@ import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/outline_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -16,43 +17,46 @@ class ClinicUnderReviewScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: const CustomAppBar(title: "Clinic Status"),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              48.height,
-              _ReviewIcon(),
-              32.height,
-              Text(
-                "Clinic Under Review",
-                style: AppFonts.bold(fontSize: 24),
-                textAlign: TextAlign.center,
-              ),
-              12.height,
-              Text(
-                "Your clinic is under review. Our admins will review it within a couple of hours.",
-                textAlign: TextAlign.center,
-                style: AppFonts.regular(fontSize: 14, color: AppColors.darkGrey),
-              ),
-              32.height,
-              PrimaryOutlinedButton(
-                text: "Contact Support",
-                onPressed: () {
-                  NavigatorHelper.push(
-                    context,
-                    const HelpCenterScreen(),
-                  );
-                },
-              ),
-              12.height,
-              PrimaryButton(
-                text: "Back",
-                onPressed: () {
-                  NavigatorHelper.pop(context);
-                },
-              ),
-            ],
+      body: PageContent(
+        maxWidth: 480,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                48.height,
+                _ReviewIcon(),
+                32.height,
+                Text(
+                  "Clinic Under Review",
+                  style: AppFonts.bold(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+                12.height,
+                Text(
+                  "Your clinic is under review. Our admins will review it within a couple of hours.",
+                  textAlign: TextAlign.center,
+                  style: AppFonts.regular(fontSize: 14, color: AppColors.darkGrey),
+                ),
+                32.height,
+                PrimaryOutlinedButton(
+                  text: "Contact Support",
+                  onPressed: () {
+                    NavigatorHelper.push(
+                      context,
+                      const HelpCenterScreen(),
+                    );
+                  },
+                ),
+                12.height,
+                PrimaryButton(
+                  text: "Back",
+                  onPressed: () {
+                    NavigatorHelper.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -68,7 +72,7 @@ class _ReviewIcon extends StatelessWidget {
       width: 120,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.primary.withOpacity(0.12),
+        color: AppColors.primary.withValues(alpha: 0.12),
       ),
       child: Center(
         child: Container(

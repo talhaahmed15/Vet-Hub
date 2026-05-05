@@ -19,6 +19,7 @@ import 'package:clinic_management_app/services/items_service.dart';
 import 'package:clinic_management_app/services/storage.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,10 +87,12 @@ class _ClinicDashboardScreenState extends State<ClinicDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+      body: PageContent(
+        maxWidth: 1200,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _Header(clinicFuture: _clinicFuture),
@@ -165,6 +168,7 @@ class _ClinicDashboardScreenState extends State<ClinicDashboardScreen> {
           ),
         ),
       ),
+      ),
     );
   }
 }
@@ -196,7 +200,7 @@ class _Header extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 22,
-              backgroundColor: AppColors.primary.withOpacity(0.12),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.12),
               child: hasRemoteLogo
                   ? ClipOval(
                       child: Image.network(
@@ -643,7 +647,7 @@ class _BarChartPainter extends CustomPainter {
         : 0.0;
 
     final paint = Paint()
-      ..color = AppColors.primary.withOpacity(0.85)
+      ..color = AppColors.primary.withValues(alpha: 0.85)
       ..style = PaintingStyle.fill;
 
     for (int i = 0; i < barCount; i += 1) {
@@ -715,9 +719,9 @@ class _RangeSelector extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.12),
+          color: AppColors.primary.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -836,7 +840,7 @@ class _Card extends StatelessWidget {
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 20),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 20),
         ],
       ),
       child: child,

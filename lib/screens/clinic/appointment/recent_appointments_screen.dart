@@ -7,6 +7,7 @@ import 'package:clinic_management_app/screens/clinic/appointment/new_appointment
 import 'package:clinic_management_app/services/appointment_service.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -41,12 +42,15 @@ class _RecentAppointmentsScreenState extends State<RecentAppointmentsScreen> {
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: AppColors.white),
       ),
-      body: SafeArea(
-        bottom: false,
-        child: Container(
-          color: AppColors.lightGrey,
-          child: Column(
-            children: [
+      body: PageContent(
+        maxWidth: 1200,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
+          child: Container(
+            color: AppColors.lightGrey,
+            child: Column(
+              children: [
               _TopHeader(
                 onOpenFilters: () {
                   _openFilters();
@@ -108,6 +112,7 @@ class _RecentAppointmentsScreenState extends State<RecentAppointmentsScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }
@@ -442,8 +447,8 @@ class _AppointmentRow extends StatelessWidget {
             AppointmentDetailsScreen(appointmentId: data.appointment.id),
           );
         },
-        splashColor: AppColors.primary.withOpacity(0.15),
-        highlightColor: AppColors.primary.withOpacity(0.06),
+        splashColor: AppColors.primary.withValues(alpha: 0.15),
+        highlightColor: AppColors.primary.withValues(alpha: 0.06),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(

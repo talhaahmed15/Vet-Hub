@@ -114,6 +114,12 @@ class _PackageSelectionStepState extends State<PackageSelectionStep> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final titleColor =
+        isDark ? Colors.white.withValues(alpha: 0.9) : AppColors.black;
+    final subtitleColor =
+        isDark ? Colors.white.withValues(alpha: 0.45) : AppColors.grey;
+
     return Form(
       key: widget.formKey,
       autovalidateMode: AutovalidateMode.disabled,
@@ -122,11 +128,14 @@ class _PackageSelectionStepState extends State<PackageSelectionStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Choose a Package", style: AppFonts.bold(fontSize: 22)),
+            Text(
+              "Choose a Package",
+              style: AppFonts.bold(fontSize: 22, color: titleColor),
+            ),
             4.height,
             Text(
               "Pick the plan that best fits your clinic today. You can upgrade any time.",
-              style: AppFonts.regular(color: AppColors.grey, fontSize: 14),
+              style: AppFonts.regular(color: subtitleColor, fontSize: 14),
             ),
             24.height,
             FutureBuilder<List<PackagePlan>>(
@@ -152,12 +161,8 @@ class _PackageSelectionStepState extends State<PackageSelectionStep> {
 
                 return FormField<PackagePlan>(
                   initialValue: _selectedPackage,
-                  validator: (value) {
-                    if (value == null) {
-                      return "Please select a package";
-                    }
-                    return null;
-                  },
+                  validator: (value) =>
+                      value == null ? "Please select a package" : null,
                   builder: (field) {
                     final selected = _selectedPackage;
                     return Column(
@@ -169,6 +174,7 @@ class _PackageSelectionStepState extends State<PackageSelectionStep> {
                           return _PackageCard(
                             packagePlan: pkg,
                             isSelected: isSelected,
+                            isDark: isDark,
                             onTap: () => _setSelected(pkg, field),
                             priceLabel: _priceLabel(pkg),
                             features: _featuresFor(pkg),
@@ -203,6 +209,7 @@ class _PackageCard extends StatelessWidget {
   const _PackageCard({
     required this.packagePlan,
     required this.isSelected,
+    required this.isDark,
     required this.onTap,
     required this.priceLabel,
     required this.features,
@@ -210,14 +217,21 @@ class _PackageCard extends StatelessWidget {
 
   final PackagePlan packagePlan;
   final bool isSelected;
+  final bool isDark;
   final VoidCallback onTap;
   final String priceLabel;
   final List<String> features;
 
   @override
   Widget build(BuildContext context) {
-    final highlight = isSelected ? AppColors.primary : AppColors.divider;
-    final bg = isSelected ? AppColors.primary.withOpacity(0.06) : AppColors.white;
+    final highlight = isSelected ? AppColors.primary : (isDark ? Colors.white.withValues(alpha: 0.16) : AppColors.divider);
+    final bg = isSelected
+        ? AppColors.primary.withValues(alpha: isDark ? 0.14 : 0.06)
+        : (isDark ? Colors.white.withValues(alpha: 0.05) : AppColors.white);
+    final nameColor = isDark ? Colors.white.withValues(alpha: 0.9) : AppColors.black;
+    final priceTextColor = isDark ? Colors.white.withValues(alpha: 0.85) : AppColors.black;
+    final billingColor = isDark ? Colors.white.withValues(alpha: 0.38) : AppColors.grey;
+    final featureColor = isDark ? Colors.white.withValues(alpha: 0.6) : AppColors.black;
 
     return InkWell(
       onTap: onTap,
@@ -230,6 +244,15 @@ class _PackageCard extends StatelessWidget {
           color: bg,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: highlight, width: isSelected ? 2 : 1),
+          boxShadow: isSelected && isDark
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.18),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,25 +262,21 @@ class _PackageCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     packagePlan.name,
-                    style: AppFonts.semiBold(fontSize: 16),
+                    style: AppFonts.semiBold(fontSize: 16, color: nameColor),
                   ),
                 ),
                 if (packagePlan.trialDays > 0)
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
+                        horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.12),
+                      color: AppColors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       "${packagePlan.trialDays} days free",
                       style: AppFonts.regular(
-                        fontSize: 10,
-                        color: AppColors.primary,
-                      ),
+                          fontSize: 10, color: AppColors.primary),
                     ),
                   ),
               ],
@@ -265,26 +284,18 @@ class _PackageCard extends StatelessWidget {
             8.height,
             Row(
               children: [
-                Text(
-                  priceLabel,
-                  style: AppFonts.bold(fontSize: 14),
-                ),
+                Text(priceLabel,
+                    style: AppFonts.bold(fontSize: 14, color: priceTextColor)),
                 8.width,
                 Expanded(
                   child: Text(
                     "Billed ${packagePlan.billingCycle}",
-                    style: AppFonts.regular(
-                      fontSize: 12,
-                      color: AppColors.grey,
-                    ),
+                    style: AppFonts.regular(fontSize: 12, color: billingColor),
                   ),
                 ),
                 if (isSelected)
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
+                  const Icon(Icons.check_circle_rounded,
+                      color: AppColors.primary, size: 20),
               ],
             ),
             12.height,
@@ -293,16 +304,14 @@ class _PackageCard extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 6),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: AppColors.success,
-                      size: 16,
-                    ),
+                    Icon(Icons.check_circle_outline,
+                        color: AppColors.success, size: 16),
                     8.width,
                     Expanded(
                       child: Text(
                         feature,
-                        style: AppFonts.regular(fontSize: 12),
+                        style: AppFonts.regular(
+                            fontSize: 12, color: featureColor),
                       ),
                     ),
                   ],

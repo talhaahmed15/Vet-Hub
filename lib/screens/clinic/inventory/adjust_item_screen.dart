@@ -267,10 +267,10 @@ class _ItemSummaryCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.03),
+            color: AppColors.black.withValues(alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 6),
           ),
@@ -283,7 +283,7 @@ class _ItemSummaryCard extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: AppColors.primary.withOpacity(0.12),
+              color: AppColors.primary.withValues(alpha: 0.12),
             ),
             child: const Icon(
               Icons.medication_outlined,
@@ -350,7 +350,7 @@ class _StepperButton extends StatelessWidget {
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: AppColors.primary.withOpacity(0.2)),
+            side: BorderSide(color: AppColors.primary.withValues(alpha: 0.2)),
           ),
         ),
         child: Icon(icon, size: 22),

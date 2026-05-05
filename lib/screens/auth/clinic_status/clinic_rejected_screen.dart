@@ -4,6 +4,7 @@ import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/outline_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -16,44 +17,47 @@ class ClinicRejectedScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: const CustomAppBar(title: "Clinic Status"),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              48.height,
-              _RejectedIcon(),
-              32.height,
-              Text(
-                "Clinic Not Approved",
-                style: AppFonts.bold(fontSize: 24),
-                textAlign: TextAlign.center,
-              ),
-              12.height,
-              Text(
-                "This clinic registration was rejected. "
-                "Please contact your administrator for the next steps.",
-                textAlign: TextAlign.center,
-                style: AppFonts.regular(fontSize: 14, color: AppColors.darkGrey),
-              ),
-              32.height,
-              PrimaryOutlinedButton(
-                text: "Contact Support",
-                onPressed: () {
-                  NavigatorHelper.push(
-                    context,
-                    const HelpCenterScreen(),
-                  );
-                },
-              ),
-              12.height,
-              PrimaryButton(
-                text: "Back",
-                onPressed: () {
-                  NavigatorHelper.pop(context);
-                },
-              ),
-            ],
+      body: PageContent(
+        maxWidth: 480,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                48.height,
+                _RejectedIcon(),
+                32.height,
+                Text(
+                  "Clinic Not Approved",
+                  style: AppFonts.bold(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+                12.height,
+                Text(
+                  "This clinic registration was rejected. "
+                  "Please contact your administrator for the next steps.",
+                  textAlign: TextAlign.center,
+                  style: AppFonts.regular(fontSize: 14, color: AppColors.darkGrey),
+                ),
+                32.height,
+                PrimaryOutlinedButton(
+                  text: "Contact Support",
+                  onPressed: () {
+                    NavigatorHelper.push(
+                      context,
+                      const HelpCenterScreen(),
+                    );
+                  },
+                ),
+                12.height,
+                PrimaryButton(
+                  text: "Back",
+                  onPressed: () {
+                    NavigatorHelper.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -69,7 +73,7 @@ class _RejectedIcon extends StatelessWidget {
       width: 120,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.error.withOpacity(0.12),
+        color: AppColors.error.withValues(alpha: 0.12),
       ),
       child: Center(
         child: Container(

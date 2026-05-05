@@ -63,7 +63,13 @@ class InventoryItemDetailScreen extends StatelessWidget {
                     case _DetailMenuAction.edit:
                       final item = loadedItem;
                       if (item == null) return;
-                      NavigatorHelper.push(context, EditItemScreen(item: item));
+                      NavigatorHelper.push(
+                        context,
+                        BlocProvider.value(
+                          value: context.read<InventoryItemDetailBloc>(),
+                          child: EditItemScreen(item: item),
+                        ),
+                      );
                       return;
                   }
                 },
@@ -258,9 +264,9 @@ class _OnHandCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.12),
+        color: AppColors.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -297,7 +303,7 @@ class _TxnTile extends StatelessWidget {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.12),
+          color: iconColor.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(_iconFor(txn.txnType), color: iconColor, size: 18),
@@ -532,7 +538,7 @@ class _HeroImage extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Icon(icon, size: 64, color: AppColors.white.withOpacity(0.9)),
+        child: Icon(icon, size: 64, color: AppColors.white.withValues(alpha: 0.9)),
       ),
     );
   }
@@ -631,7 +637,7 @@ class _ActionGrid extends StatelessWidget {
           child: _ActionTile(
             label: 'Use',
             icon: Icons.remove_circle_rounded,
-            background: AppColors.primary.withOpacity(0.16),
+            background: AppColors.primary.withValues(alpha: 0.16),
             foreground: AppColors.primary,
             onTap: () => NavigatorHelper.push(
               context,
@@ -704,7 +710,7 @@ class _ActionTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: background,
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: foreground.withOpacity(0.12)),
+          border: Border.all(color: foreground.withValues(alpha: 0.12)),
         ),
         child: Column(
           children: [
@@ -737,7 +743,7 @@ class _InventoryStatusCard extends StatelessWidget {
         border: Border.all(color: const Color(0xFFE6EEF9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -863,7 +869,7 @@ class _LocationTile extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.12),
+              color: AppColors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(

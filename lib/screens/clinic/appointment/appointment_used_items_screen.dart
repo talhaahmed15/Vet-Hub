@@ -8,6 +8,7 @@ import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/icon_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -171,11 +172,14 @@ class _AppointmentUsedItemsScreenState extends State<AppointmentUsedItemsScreen>
     return Scaffold(
       backgroundColor: bg,
       appBar: CustomAppBar(title: 'Log Used Items'),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
               color: isDark ? const Color(0xFF101922) : AppColors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,6 +277,7 @@ class _AppointmentUsedItemsScreenState extends State<AppointmentUsedItemsScreen>
               ),
             ),
           ],
+          ),
         ),
       ),
       bottomNavigationBar: _pending.isEmpty

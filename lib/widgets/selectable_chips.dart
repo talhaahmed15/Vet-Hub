@@ -85,12 +85,12 @@ class _SelectableChipsState extends State<SelectableChips> {
               ],
             ),
             backgroundColor: isSelected
-                ? (widget.selectedColor ?? AppColors.primary).withOpacity(0.2)
-                : (widget.unselectedColor ?? AppColors.grey).withOpacity(0.2),
+                ? (widget.selectedColor ?? AppColors.primary).withValues(alpha: 0.2)
+                : (widget.unselectedColor ?? AppColors.grey).withValues(alpha: 0.2),
             side: BorderSide(
               color: isSelected
                   ? (widget.selectedColor ?? AppColors.primary)
-                  : (widget.unselectedColor ?? AppColors.grey).withOpacity(0.3),
+                  : (widget.unselectedColor ?? AppColors.grey).withValues(alpha: 0.3),
             ),
           ),
         );

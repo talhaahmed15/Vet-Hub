@@ -94,12 +94,12 @@ class AppointmentSummaryScreen extends StatelessWidget {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: tone.withOpacity(
-                                    isDark ? 0.22 : 0.14,
+                                  color: tone.withValues(
+                                    alpha: isDark ? 0.22 : 0.14,
                                   ),
                                   borderRadius: BorderRadius.circular(999),
                                   border: Border.all(
-                                    color: tone.withOpacity(0.35),
+                                    color: tone.withValues(alpha: 0.35),
                                   ),
                                 ),
                                 child: Text(
@@ -392,7 +392,7 @@ class _RxRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.12),
+              color: AppColors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primary, size: 20),

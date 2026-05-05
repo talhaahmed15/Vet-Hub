@@ -325,7 +325,7 @@ class _PatientCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
@@ -477,7 +477,7 @@ class _ClientCard extends StatelessWidget {
                 boxShadow: [
                   if (!isDark)
                     BoxShadow(
-                      color: AppColors.black.withOpacity(0.06),
+                      color: AppColors.black.withValues(alpha: 0.06),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),
@@ -631,7 +631,7 @@ class _LineItemTile extends StatelessWidget {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.12),
+              color: AppColors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.add, color: AppColors.primary),
@@ -690,14 +690,14 @@ class _AddButton extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.08),
+          color: AppColors.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(6),
         ),
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(6),
-          splashColor: AppColors.primary.withOpacity(0.2),
-          highlightColor: AppColors.primary.withOpacity(0.08),
+          splashColor: AppColors.primary.withValues(alpha: 0.2),
+          highlightColor: AppColors.primary.withValues(alpha: 0.08),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 14),
             alignment: Alignment.center,

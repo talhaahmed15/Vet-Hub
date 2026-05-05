@@ -17,17 +17,19 @@ class ServicesAndHoursStep extends StatelessWidget {
   final GlobalKey formKey;
 
   final List<String> days = const [
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
-    "Sun",
+    "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun",
   ];
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final titleColor =
+        isDark ? Colors.white.withValues(alpha: 0.9) : AppColors.black;
+    final subtitleColor =
+        isDark ? Colors.white.withValues(alpha: 0.45) : AppColors.grey;
+    final labelColor =
+        isDark ? Colors.white.withValues(alpha: 0.65) : AppColors.black;
+
     const defaultWorkingDays = ["Mon", "Tue", "Wed", "Thu", "Fri"];
     final hasWorkingDays =
         formData.workingDays != null && formData.workingDays!.isNotEmpty;
@@ -46,22 +48,23 @@ class ServicesAndHoursStep extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Services & Hours", style: AppFonts.bold(fontSize: 22)),
+            Text(
+              "Services & Hours",
+              style: AppFonts.bold(fontSize: 22, color: titleColor),
+            ),
             4.height,
             Text(
-              "Let patients know what you offer and when you’re open.",
-              style: AppFonts.regular(color: AppColors.grey, fontSize: 14),
+              "Let patients know what you offer and when you're open.",
+              style: AppFonts.regular(color: subtitleColor, fontSize: 14),
             ),
             24.height,
 
-            // Services Offered
-            Text('Services Offered', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Services Offered',
+                style: AppFonts.semiBold(fontSize: 12, color: labelColor)),
             4.height,
             SelectableChips(
               items: ["Consultation", "Surgery", "Grooming", "Vaccination"],
-              initialSelected:
-                  formData.servicesOffered ??
-                  [], // use saved services if editing
+              initialSelected: formData.servicesOffered ?? [],
               onSelectionChanged: (selected) {
                 formData.servicesOffered = selected;
               },
@@ -69,9 +72,6 @@ class ServicesAndHoursStep extends StatelessWidget {
 
             24.height,
 
-            // Working Hours
-            // Text('Working Hours', style: AppFonts.semiBold(fontSize: 12)),
-            // 12.height,
             Row(
               children: [
                 Expanded(
@@ -81,9 +81,7 @@ class ServicesAndHoursStep extends StatelessWidget {
                         label: "Opening Time",
                         value: formData.openingTime,
                         onTimeSelected: (time) {
-                          setState(() {
-                            formData.openingTime = time;
-                          });
+                          setState(() => formData.openingTime = time);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -103,9 +101,7 @@ class ServicesAndHoursStep extends StatelessWidget {
                         label: "Closing Time",
                         value: formData.closingTime,
                         onTimeSelected: (time) {
-                          setState(() {
-                            formData.closingTime = time;
-                          });
+                          setState(() => formData.closingTime = time);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -122,8 +118,8 @@ class ServicesAndHoursStep extends StatelessWidget {
 
             16.height,
 
-            // Working Days
-            Text('Working Days', style: AppFonts.semiBold(fontSize: 12)),
+            Text('Working Days',
+                style: AppFonts.semiBold(fontSize: 12, color: labelColor)),
             8.height,
             FormField<List<String>>(
               initialValue: initialWorkingDays,

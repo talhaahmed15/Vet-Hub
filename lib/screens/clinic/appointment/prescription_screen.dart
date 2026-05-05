@@ -7,6 +7,7 @@ import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/outline_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,12 +77,15 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
           ),
         ),
       ),
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 140),
                 children: [
                   const _ProgressDots(activeIndex: 1),
@@ -241,6 +245,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
           ],
         ),
       ),
+      ),
     );
   }
 }
@@ -370,7 +375,7 @@ class _RxTile extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.12),
+              color: AppColors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primary),

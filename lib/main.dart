@@ -12,6 +12,7 @@ import 'package:clinic_management_app/services/inventory_service.dart';
 import 'package:clinic_management_app/services/invoice_service.dart';
 import 'package:clinic_management_app/services/items_service.dart';
 import 'package:clinic_management_app/themes/app_theme.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -73,10 +74,23 @@ class VetHubApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'VetHub',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       // darkTheme: AppTheme.dark,
+      scrollBehavior: _AppScrollBehavior(),
       home: const SplashScreen(),
     );
   }
+}
+
+/// Enables mouse/trackpad drag-scrolling on web and desktop,
+/// in addition to the default touch scrolling.
+class _AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+  };
 }

@@ -12,6 +12,7 @@ import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/custom_dropdown_field.dart';
 import 'package:clinic_management_app/widgets/custom_textfield.dart';
 import 'package:clinic_management_app/widgets/icon_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -184,9 +185,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
           });
         },
         child: Scaffold(
-          body: Column(
-            children: [
-              CustomAppBar(title: 'New Appointment'),
+          body: PageContent(
+            maxWidth: 700,
+            fillHeight: true,
+            child: Column(
+              children: [
+                CustomAppBar(title: 'New Appointment'),
               Expanded(
                 child: Form(
                   key: _formKey,
@@ -344,6 +348,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
               ),
             ],
           ),
+          ),
         ),
       ),
     );
@@ -493,7 +498,7 @@ class _OwnerTypeAheadState extends State<_OwnerTypeAhead> {
               boxShadow: [
                 if (!isDark)
                   BoxShadow(
-                    color: AppColors.black.withOpacity(0.06),
+                    color: AppColors.black.withValues(alpha: 0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   ),

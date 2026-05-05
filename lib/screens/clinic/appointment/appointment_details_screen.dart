@@ -13,6 +13,7 @@ import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
 import 'package:clinic_management_app/widgets/icon_button.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -87,9 +88,12 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
           ],
         ),
       ),
-      body: SafeArea(
-        bottom: false,
-        child: FutureBuilder<AppointmentDetail?>(
+      body: PageContent(
+        maxWidth: 700,
+        fillHeight: true,
+        child: SafeArea(
+          bottom: false,
+          child: FutureBuilder<AppointmentDetail?>(
           future: _future,
           builder: (context, snapshot) {
             final isLoading =
@@ -172,6 +176,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
               ],
             );
           },
+          ),
         ),
       ),
     );
@@ -235,7 +240,7 @@ class _ProfileHeader extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.success.withOpacity(0.15),
+                        color: AppColors.success.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
@@ -484,7 +489,7 @@ class _PrescriptionsSection extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(isDark ? 0.20 : 0.12),
+                color: AppColors.primary.withValues(alpha: isDark ? 0.20 : 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: AppColors.primary),
@@ -658,9 +663,9 @@ class _ConditionSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: chipColor.withOpacity(isDark ? 0.22 : 0.12),
+              color: chipColor.withValues(alpha: isDark ? 0.22 : 0.12),
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: chipColor.withOpacity(0.35)),
+              border: Border.all(color: chipColor.withValues(alpha: 0.35)),
             ),
             child: Text(
               label.toUpperCase(),
@@ -707,7 +712,7 @@ class _BottomActions extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.15 : 0.06),
+            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.06),
             blurRadius: 12,
             offset: const Offset(0, -4),
           ),

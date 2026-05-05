@@ -1,6 +1,7 @@
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/widgets/custom_appbar.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -12,34 +13,37 @@ class AboutVetFlowScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppBar(title: "About Us"),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _AppHeader(),
-            24.height,
-            _InfoCard(
-              title: "What is VetFlow?",
-              description:
-                  "VetFlow is an all-in-one clinic management platform designed "
-                  "to simplify veterinary operations. From appointments and "
-                  "patient records to billing and staff management — VetFlow "
-                  "helps clinics operate efficiently and focus on animal care.",
-            ),
-            _InfoCard(
-              title: "Version",
-              description: "VetFlow v2.4.1\nRelease Date: January 2026",
-            ),
-            _InfoCard(
-              title: "Developed By",
-              description:
-                  "VetFlow Technologies\nCrafted with ❤️ for modern veterinary clinics.",
-            ),
-            _InfoCard(
-              title: "Legal",
-              description: "© 2026 VetFlow Technologies\nAll rights reserved.",
-            ),
-          ],
+      body: PageContent(
+        maxWidth: 800,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              _AppHeader(),
+              24.height,
+              _InfoCard(
+                title: "What is VetFlow?",
+                description:
+                    "VetFlow is an all-in-one clinic management platform designed "
+                    "to simplify veterinary operations. From appointments and "
+                    "patient records to billing and staff management — VetFlow "
+                    "helps clinics operate efficiently and focus on animal care.",
+              ),
+              _InfoCard(
+                title: "Version",
+                description: "VetFlow v2.4.1\nRelease Date: January 2026",
+              ),
+              _InfoCard(
+                title: "Developed By",
+                description:
+                    "VetFlow Technologies\nCrafted with ❤️ for modern veterinary clinics.",
+              ),
+              _InfoCard(
+                title: "Legal",
+                description: "© 2026 VetFlow Technologies\nAll rights reserved.",
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -55,7 +59,7 @@ class _AppHeader extends StatelessWidget {
           height: 84,
           width: 84,
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.12),
+            color: AppColors.primary.withValues(alpha: 0.12),
             shape: BoxShape.circle,
           ),
           child: const Icon(Icons.pets, size: 40, color: AppColors.primary),

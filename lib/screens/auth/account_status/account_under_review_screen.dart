@@ -3,6 +3,7 @@ import 'package:clinic_management_app/navigation/navigation_helper.dart';
 import 'package:clinic_management_app/screens/auth/login_screen.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/primary_button.dart';
 import 'package:clinic_management_app/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +26,15 @@ class AccountUnderReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.hourglass_bottom, size: 64, color: AppColors.primary),
+      body: PageContent(
+        maxWidth: 480,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.hourglass_bottom, size: 64, color: AppColors.primary),
               20.height,
               Text(
                 "Account Under Review",
@@ -50,6 +53,7 @@ class AccountUnderReviewScreen extends StatelessWidget {
                 onPressed: () => _signOut(context),
               ),
             ],
+            ),
           ),
         ),
       ),
