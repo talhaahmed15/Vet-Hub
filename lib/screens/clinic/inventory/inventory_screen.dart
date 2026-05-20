@@ -11,28 +11,13 @@ import 'package:clinic_management_app/screens/clinic/inventory/item_detail_page.
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_consts.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
+import 'package:clinic_management_app/themes/app_icons.dart';
 import 'package:clinic_management_app/utils/responsive.dart';
 import 'package:clinic_management_app/widgets/app_toast.dart';
 import 'package:clinic_management_app/widgets/page_content.dart';
 import 'package:clinic_management_app/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// ── Clinical Serenity design tokens ──────────────────────────────────────────
-const _kPrimary = Color(0xFF004AC6);
-const _kBorder = Color(0xFFE2E8F0);
-const _kBorderFaint = Color(0xFFF1F5F9);
-const _kBg = Color(0xFFF7F9FB);
-const _kSurface = Color(0xFFFFFFFF);
-const _kSlate50 = Color(0xFFF8FAFC);
-const _kSlate400 = Color(0xFF94A3B8);
-const _kSlate500 = Color(0xFF64748B);
-const _kSlate600 = Color(0xFF475569);
-const _kSlate900 = Color(0xFF0F172A);
-const _kAmber50 = Color(0xFFFFFBEB);
-const _kAmber200 = Color(0xFFFDE68A);
-const _kAmber700 = Color(0xFFB45309);
-const _kAmber900 = Color(0xFF78350F);
 
 class InventoryListScreen extends StatefulWidget {
   const InventoryListScreen({super.key});
@@ -147,12 +132,16 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
     final isMobile = Responsive.isMobile(context);
 
     return Scaffold(
-      backgroundColor: isMobile ? AppColors.iosBg : _kBg,
+      backgroundColor: isMobile ? AppColors.iosBg : AppColors.bgCanvas,
       floatingActionButton: isMobile
           ? FloatingActionButton(
               onPressed: _openAddItemScreen,
-              backgroundColor: _kPrimary,
-              child: const Icon(Icons.add_rounded, color: AppColors.white),
+              backgroundColor: AppColors.primaryDeep,
+              child: AppIcons.show(
+                AppIcons.clipboardAdd,
+                size: 22,
+                color: AppColors.white,
+              ),
             )
           : null,
       body: PageContent(
@@ -227,7 +216,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
     required String? loadMoreError,
   }) {
     return RefreshIndicator(
-      color: _kPrimary,
+      color: AppColors.primaryDeep,
       onRefresh: () async {
         final query = _searchController.text.trim();
         context.read<InventoryItemsBloc>().add(
@@ -240,7 +229,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
           controller: _scrollController,
           children: [
             Container(
-              color: _kSurface,
+              color: AppColors.surface,
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,13 +276,16 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                 child: Center(
                   child: Text(
                     'No inventory items yet.',
-                    style: AppFonts.regular(fontSize: 14, color: _kSlate500),
+                    style: AppFonts.regular(
+                      fontSize: 14,
+                      color: AppColors.slate500,
+                    ),
                   ),
                 ),
               )
             else
               Container(
-                color: _kSurface,
+                color: AppColors.surface,
                 child: Column(
                   children: [
                     const SizedBox(height: 4),
@@ -411,16 +403,20 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.inventory_2_outlined, size: 48, color: _kSlate400),
+            AppIcons.show(
+              AppIcons.jarOfPills,
+              size: 48,
+              color: AppColors.slate400,
+            ),
             const SizedBox(height: 12),
             Text(
               'No inventory items yet.',
-              style: AppFonts.semiBold(fontSize: 15, color: _kSlate500),
+              style: AppFonts.semiBold(fontSize: 15, color: AppColors.slate500),
             ),
             const SizedBox(height: 4),
             Text(
               'Add your first item to get started.',
-              style: AppFonts.regular(fontSize: 13, color: _kSlate400),
+              style: AppFonts.regular(fontSize: 13, color: AppColors.slate400),
             ),
           ],
         ),
@@ -455,21 +451,21 @@ class _LowStockBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final total = lowStock + outOfStock;
     return Container(
-      color: _kSurface,
+      color: AppColors.surface,
       padding: const EdgeInsets.fromLTRB(24, 14, 24, 0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: _kAmber50,
+          color: AppColors.amber50,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: _kAmber200),
+          border: Border.all(color: AppColors.amber200),
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.warning_amber_rounded,
-              color: _kAmber700,
+            AppIcons.show(
+              AppIcons.dangerTriangle,
               size: 20,
+              color: AppColors.amber700,
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -482,7 +478,7 @@ class _LowStockBanner extends StatelessWidget {
                       fontFamily: 'Inter',
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: _kAmber900,
+                      color: AppColors.amber900,
                     ),
                   ),
                   if (lowStock > 0 || outOfStock > 0)
@@ -494,7 +490,7 @@ class _LowStockBanner extends StatelessWidget {
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11,
-                        color: _kAmber700,
+                        color: AppColors.amber700,
                       ),
                     ),
                 ],
@@ -518,7 +514,7 @@ class _WebHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: _kSurface,
+      color: AppColors.surface,
       padding: const EdgeInsets.fromLTRB(24, 22, 24, 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -530,24 +526,31 @@ class _WebHeader extends StatelessWidget {
                 'Inventory',
                 style: AppFonts.extraBold(
                   fontSize: 28,
-                  color: _kSlate900,
+                  color: AppColors.slate900,
                   letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 3),
               Text(
                 'Manage clinic supplies, medications, and equipment.',
-                style: AppFonts.regular(fontSize: 13, color: _kSlate500),
+                style: AppFonts.regular(
+                  fontSize: 13,
+                  color: AppColors.slate500,
+                ),
               ),
             ],
           ),
           const Spacer(),
           FilledButton.icon(
             onPressed: onAddItem,
-            icon: const Icon(Icons.add_box_outlined, size: 17),
+            icon: AppIcons.show(
+              AppIcons.clipboardAdd,
+              size: 17,
+              color: Colors.white,
+            ),
             label: const Text('Add New Item'),
             style: FilledButton.styleFrom(
-              backgroundColor: _kPrimary,
+              backgroundColor: AppColors.primaryDeep,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
               shape: RoundedRectangleBorder(
@@ -590,7 +593,7 @@ class _FilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: _kSurface,
+      color: AppColors.surface,
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       child: Column(
         children: [
@@ -603,9 +606,9 @@ class _FilterBar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: _kSurface,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: _kBorder),
+              border: Border.all(color: AppColors.border),
             ),
             child: Row(
               children: [
@@ -633,7 +636,7 @@ class _FilterBar extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 20,
-                  color: _kBorder,
+                  color: AppColors.border,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                 ),
                 Text(
@@ -641,12 +644,16 @@ class _FilterBar extends StatelessWidget {
                   style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11,
-                    color: _kSlate400,
+                    color: AppColors.slate400,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(Icons.filter_list_rounded, size: 18, color: _kSlate400),
+                AppIcons.show(
+                  AppIcons.tuning,
+                  size: 18,
+                  color: AppColors.slate400,
+                ),
                 const SizedBox(width: 4),
               ],
             ),
@@ -677,7 +684,7 @@ class _TabButton extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFEEF2FF) : Colors.transparent,
+          color: isSelected ? AppColors.chipSelectedBg : Colors.transparent,
           borderRadius: BorderRadius.circular(7),
         ),
         child: Text(
@@ -686,7 +693,7 @@ class _TabButton extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 13,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            color: isSelected ? _kPrimary : _kSlate500,
+            color: isSelected ? AppColors.primaryDeep : AppColors.slate500,
           ),
         ),
       ),
@@ -744,12 +751,12 @@ class _InventoryWebTable extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: _kSurface,
+                    color: AppColors.surface,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
                     ),
-                    border: Border.all(color: _kBorder),
+                    border: Border.all(color: AppColors.border),
                   ),
                   child: _TableHeaderRow(
                     showCategory: showCategory,
@@ -768,7 +775,7 @@ class _InventoryWebTable extends StatelessWidget {
                   isLast && loadMoreError == null && !isLoadingMore;
               return Container(
                 decoration: BoxDecoration(
-                  color: _kSurface,
+                  color: AppColors.surface,
                   borderRadius: isRounded
                       ? const BorderRadius.only(
                           bottomLeft: Radius.circular(12),
@@ -776,11 +783,11 @@ class _InventoryWebTable extends StatelessWidget {
                         )
                       : null,
                   border: isRounded
-                      ? Border.all(color: _kBorder)
+                      ? Border.all(color: AppColors.border)
                       : Border(
-                          left: BorderSide(color: _kBorder),
-                          right: BorderSide(color: _kBorder),
-                          bottom: BorderSide(color: _kBorderFaint),
+                          left: BorderSide(color: AppColors.border),
+                          right: BorderSide(color: AppColors.border),
+                          bottom: BorderSide(color: AppColors.borderFaint),
                         ),
                 ),
                 child: _InventoryTableRow(
@@ -800,15 +807,15 @@ class _InventoryWebTable extends StatelessWidget {
               if (!hasFooterContent) return const SizedBox(height: 8);
               return Container(
                 decoration: BoxDecoration(
-                  color: _kSurface,
+                  color: AppColors.surface,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(12),
                     bottomRight: Radius.circular(12),
                   ),
                   border: Border(
-                    left: BorderSide(color: _kBorder),
-                    right: BorderSide(color: _kBorder),
-                    bottom: BorderSide(color: _kBorder),
+                    left: BorderSide(color: AppColors.border),
+                    right: BorderSide(color: AppColors.border),
+                    bottom: BorderSide(color: AppColors.border),
                   ),
                 ),
                 child: _TableFooter(
@@ -847,7 +854,7 @@ class _TableHeaderRow extends StatelessWidget {
     fontFamily: 'Inter',
     fontSize: 11,
     fontWeight: FontWeight.w600,
-    color: _kSlate500,
+    color: AppColors.slate500,
     letterSpacing: 0.6,
   );
 
@@ -855,7 +862,7 @@ class _TableHeaderRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: _kSlate50,
+        color: AppColors.slate50,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(11),
           topRight: Radius.circular(11),
@@ -925,15 +932,18 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
     final status = statusFor(item.onHand, minThresholdFor(item.category));
     final sku = _skuFrom(item);
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
         onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          color: _hovered ? _kSlate50 : Colors.transparent,
+        onHover: (hovering) {
+          if (_hovered == hovering) return;
+          setState(() => _hovered = hovering);
+        },
+        hoverColor: AppColors.slate50,
+        splashColor: AppColors.primaryDeep.withValues(alpha: 0.06),
+        highlightColor: AppColors.primaryDeep.withValues(alpha: 0.03),
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
           child: Row(
             children: [
@@ -952,7 +962,7 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
                           fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: _kSlate900,
+                          color: AppColors.slate900,
                         ),
                       ),
                     ),
@@ -969,7 +979,7 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
-                      color: _kSlate500,
+                      color: AppColors.slate500,
                     ),
                   ),
                 ),
@@ -983,7 +993,7 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
                     style: TextStyle(
                       fontFamily: 'monospace',
                       fontSize: 12,
-                      color: _kSlate400,
+                      color: AppColors.slate400,
                     ),
                   ),
                 ),
@@ -1005,7 +1015,7 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
                       fontFamily: 'Inter',
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: _kSlate900,
+                      color: AppColors.slate900,
                     ),
                   ),
                 ),
@@ -1018,10 +1028,12 @@ class _InventoryTableRowState extends State<_InventoryTableRow> {
                     borderRadius: BorderRadius.circular(6),
                     child: Padding(
                       padding: const EdgeInsets.all(6),
-                      child: Icon(
-                        Icons.edit_outlined,
+                      child: AppIcons.show(
+                        AppIcons.penNewSquare,
                         size: 17,
-                        color: _hovered ? _kPrimary : _kSlate400,
+                        color: _hovered
+                            ? AppColors.primaryDeep
+                            : AppColors.slate400,
                       ),
                     ),
                   ),
@@ -1055,7 +1067,10 @@ class _TableFooter extends StatelessWidget {
           child: SizedBox(
             width: 20,
             height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2, color: _kPrimary),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: AppColors.primaryDeep,
+            ),
           ),
         ),
       );
@@ -1066,7 +1081,7 @@ class _TableFooter extends StatelessWidget {
         child: Center(
           child: TextButton(
             onPressed: onRetry,
-            style: TextButton.styleFrom(foregroundColor: _kPrimary),
+            style: TextButton.styleFrom(foregroundColor: AppColors.primaryDeep),
             child: const Text('Retry loading more'),
           ),
         ),
@@ -1102,8 +1117,8 @@ class _StatsBento extends StatelessWidget {
         children: [
           Expanded(
             child: _BentoCard(
-              icon: Icons.payments_outlined,
-              iconColor: _kPrimary,
+              iconAsset: AppIcons.walletMoney,
+              iconColor: AppColors.primaryDeep,
               label: 'Inventory Value',
               value:
                   '\$${inventoryValue >= 10000 ? '${(inventoryValue / 1000).toStringAsFixed(1)}k' : inventoryValue.toStringAsFixed(2)}',
@@ -1113,18 +1128,18 @@ class _StatsBento extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: _BentoCard(
-              icon: Icons.warning_amber_rounded,
-              iconColor: const Color(0xFFD97706),
+              iconAsset: AppIcons.dangerTriangle,
+              iconColor: AppColors.amberStock,
               label: 'Low Stock',
               value: '$lowStock',
               subtitle: 'Items below threshold',
-              valueColor: lowStock > 0 ? const Color(0xFFD97706) : null,
+              valueColor: lowStock > 0 ? AppColors.amberStock : null,
             ),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: _BentoCard(
-              icon: Icons.remove_circle_outline_rounded,
+              iconAsset: AppIcons.dangerTriangle,
               iconColor: AppColors.error,
               label: 'Out of Stock',
               value: '$outOfStock',
@@ -1140,7 +1155,7 @@ class _StatsBento extends StatelessWidget {
 
 class _BentoCard extends StatelessWidget {
   const _BentoCard({
-    required this.icon,
+    required this.iconAsset,
     required this.iconColor,
     required this.label,
     required this.value,
@@ -1148,7 +1163,7 @@ class _BentoCard extends StatelessWidget {
     this.valueColor,
   });
 
-  final IconData icon;
+  final String iconAsset;
   final Color iconColor;
   final String label;
   final String value;
@@ -1160,9 +1175,9 @@ class _BentoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: _kSurface,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -1183,11 +1198,11 @@ class _BentoCard extends StatelessWidget {
                   fontFamily: 'Inter',
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: _kSlate400,
+                  color: AppColors.slate400,
                   letterSpacing: 0.8,
                 ),
               ),
-              Icon(icon, color: iconColor, size: 20),
+              AppIcons.show(iconAsset, size: 20, color: iconColor),
             ],
           ),
           const SizedBox(height: 10),
@@ -1197,7 +1212,7 @@ class _BentoCard extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: 26,
               fontWeight: FontWeight.w700,
-              color: valueColor ?? _kSlate900,
+              color: valueColor ?? AppColors.slate900,
               height: 1,
             ),
           ),
@@ -1207,7 +1222,7 @@ class _BentoCard extends StatelessWidget {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 11,
-              color: _kSlate500,
+              color: AppColors.slate500,
             ),
           ),
         ],
@@ -1232,8 +1247,8 @@ class _StockBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = switch (status) {
-      InventoryStatus.inStock => const Color(0xFF15803D),
-      InventoryStatus.lowStock => const Color(0xFFD97706),
+      InventoryStatus.inStock => AppColors.stockIn,
+      InventoryStatus.lowStock => AppColors.amberStock,
       InventoryStatus.outOfStock => AppColors.error,
     };
 
@@ -1261,25 +1276,25 @@ class _ItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cat = (category ?? '').toLowerCase();
-    final IconData icon;
+    final String asset;
     final Color bg, iconColor;
 
     if (cat.contains('med') || cat.contains('vacc')) {
-      icon = Icons.medication_outlined;
-      bg = const Color(0xFFEFF6FF);
-      iconColor = _kPrimary;
+      asset = AppIcons.jarOfPills;
+      bg = AppColors.tintBlueBg;
+      iconColor = AppColors.primaryDeep;
     } else if (cat.contains('surg') || cat.contains('equip')) {
-      icon = Icons.content_cut_outlined;
-      bg = const Color(0xFFF3F4F6);
-      iconColor = _kSlate600;
+      asset = AppIcons.stethoscope;
+      bg = AppColors.tintGreyBg;
+      iconColor = AppColors.slate600;
     } else if (cat.contains('food') || cat.contains('diet')) {
-      icon = Icons.restaurant_outlined;
-      bg = const Color(0xFFF5F3FF);
-      iconColor = const Color(0xFF7C3AED);
+      asset = AppIcons.shop;
+      bg = AppColors.tintVioletBg;
+      iconColor = AppColors.tintViolet;
     } else {
-      icon = Icons.vaccines_outlined;
-      bg = const Color(0xFFF0FDF4);
-      iconColor = const Color(0xFF15803D);
+      asset = AppIcons.adhesivePlaster;
+      bg = AppColors.stockInBg;
+      iconColor = AppColors.stockIn;
     }
 
     return Container(
@@ -1289,7 +1304,7 @@ class _ItemIcon extends StatelessWidget {
         color: bg,
         borderRadius: BorderRadius.circular(7),
       ),
-      child: Icon(icon, size: 18, color: iconColor),
+      child: Center(child: AppIcons.show(asset, size: 18, color: iconColor)),
     );
   }
 }
@@ -1327,10 +1342,14 @@ class _CategoryChips extends StatelessWidget {
                       vertical: 7,
                     ),
                     decoration: BoxDecoration(
-                      color: isSelected ? _kPrimary : const Color(0xFFF1F6FB),
+                      color: isSelected
+                          ? AppColors.primaryDeep
+                          : AppColors.chipPaleBg,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: isSelected ? _kPrimary : const Color(0xFFE1ECFA),
+                        color: isSelected
+                            ? AppColors.primaryDeep
+                            : AppColors.chipPaleBorder,
                       ),
                     ),
                     child: Text(
@@ -1339,7 +1358,7 @@ class _CategoryChips extends StatelessWidget {
                         fontFamily: 'Inter',
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: isSelected ? Colors.white : _kSlate900,
+                        color: isSelected ? Colors.white : AppColors.slate900,
                       ),
                     ),
                   ),
@@ -1366,11 +1385,11 @@ class _InventoryItemCard extends StatelessWidget {
     final status = statusFor(item.onHand, minThreshold);
 
     return Material(
-      color: _kSurface,
+      color: AppColors.surface,
       child: InkWell(
         onTap: onTap,
-        splashColor: _kPrimary.withValues(alpha: 0.08),
-        highlightColor: _kPrimary.withValues(alpha: 0.04),
+        splashColor: AppColors.primaryDeep.withValues(alpha: 0.08),
+        highlightColor: AppColors.primaryDeep.withValues(alpha: 0.04),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
@@ -1389,7 +1408,7 @@ class _InventoryItemCard extends StatelessWidget {
                         fontFamily: 'Inter',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: _kSlate900,
+                        color: AppColors.slate900,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -1399,7 +1418,7 @@ class _InventoryItemCard extends StatelessWidget {
                         fontFamily: 'Inter',
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: _kSlate400,
+                        color: AppColors.slate400,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -1419,7 +1438,7 @@ class _InventoryItemCard extends StatelessWidget {
                   fontFamily: 'Inter',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: _kSlate900,
+                  color: AppColors.slate900,
                 ),
               ),
             ],
@@ -1438,21 +1457,33 @@ class _ItemThumb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cat = (category ?? '').toLowerCase();
-    final IconData icon;
+    final String asset;
     final List<Color> gradientColors;
 
     if (cat.contains('med') || cat.contains('vacc')) {
-      icon = Icons.medication_outlined;
-      gradientColors = [const Color(0xFF003A9E), const Color(0xFF2563EB)];
+      asset = AppIcons.jarOfPills;
+      gradientColors = const [AppColors.gradMedStart, AppColors.gradMedEnd];
     } else if (cat.contains('equip')) {
-      icon = Icons.medical_services_outlined;
-      gradientColors = [const Color(0xFF0F2B22), AppColors.greyBlue];
+      asset = AppIcons.stethoscope;
+      gradientColors = const [AppColors.gradEquipStart, AppColors.greyBlue];
     } else if (cat.contains('consum') || cat.contains('clean')) {
-      icon = Icons.clean_hands_outlined;
-      gradientColors = [const Color(0xFF1A1A2E), const Color(0xFF16213E)];
+      asset = AppIcons.adhesivePlaster;
+      gradientColors = const [
+        AppColors.gradConsumStart,
+        AppColors.gradConsumEnd,
+      ];
+    } else if (cat.contains('food') || cat.contains('diet')) {
+      asset = AppIcons.shop;
+      gradientColors = const [
+        AppColors.gradDefaultStart,
+        AppColors.gradDefaultEnd,
+      ];
     } else {
-      icon = Icons.vaccines_outlined;
-      gradientColors = [const Color(0xFF134E4A), const Color(0xFF0D9488)];
+      asset = AppIcons.stethoscope;
+      gradientColors = const [
+        AppColors.gradDefaultStart,
+        AppColors.gradDefaultEnd,
+      ];
     }
 
     return Container(
@@ -1466,7 +1497,13 @@ class _ItemThumb extends StatelessWidget {
           end: Alignment.topRight,
         ),
       ),
-      child: Icon(icon, color: Colors.white.withValues(alpha: 0.92), size: 26),
+      child: Center(
+        child: AppIcons.show(
+          asset,
+          size: 26,
+          color: Colors.white.withValues(alpha: 0.92),
+        ),
+      ),
     );
   }
 }
@@ -1490,14 +1527,16 @@ class _ErrorView extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: AppFonts.regular(fontSize: 13, color: _kSlate500),
+              style: AppFonts.regular(fontSize: 13, color: AppColors.slate500),
             ),
             const SizedBox(height: 12),
             SizedBox(
               width: 180,
               child: FilledButton(
                 onPressed: onRetry,
-                style: FilledButton.styleFrom(backgroundColor: _kPrimary),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primaryDeep,
+                ),
                 child: const Text('Retry'),
               ),
             ),

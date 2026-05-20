@@ -15,20 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
-const _kPrimary     = Color(0xFF004AC6);
-const _kBorder      = Color(0xFFE2E8F0);
-const _kBorderFaint = Color(0xFFF1F5F9);
-const _kBg          = Color(0xFFF7F9FB);
-const _kSurface     = Color(0xFFFFFFFF);
-const _kSlate50     = Color(0xFFF8FAFC);
-const _kSlate400    = Color(0xFF94A3B8);
-const _kSlate500    = Color(0xFF64748B);
-const _kSlate700    = Color(0xFF334155);
-const _kSlate900    = Color(0xFF0F172A);
-const _kAmber700    = Color(0xFFB45309);
-const _kAmber900    = Color(0xFF78350F);
-
 class EditItemScreen extends StatefulWidget {
   const EditItemScreen({super.key, required this.item});
 
@@ -199,14 +185,14 @@ class _EditItemScreenState extends State<EditItemScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9),
+                    color: AppColors.borderFaint,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     'Prices are used when adding products to invoices.',
                     style: AppFonts.regular(
                       fontSize: 12,
-                      color: _kSlate500,
+                      color: AppColors.slate500,
                     ),
                   ),
                 ),
@@ -226,7 +212,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
     final status = statusFor(item.onHand, minThreshold);
 
     return Scaffold(
-      backgroundColor: _kBg,
+      backgroundColor: AppColors.bgCanvas,
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -258,7 +244,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                         'Edit Item: ${item.name}',
                         style: AppFonts.extraBold(
                           fontSize: 26,
-                          color: _kSlate900,
+                          color: AppColors.slate900,
                           letterSpacing: -0.4,
                         ),
                       ),
@@ -412,7 +398,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: _kPrimary,
+                                    color: AppColors.primaryDeep,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Column(
@@ -449,7 +435,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                           onPressed: () =>
                                               Navigator.of(context).pop(),
                                           style: OutlinedButton.styleFrom(
-                                            foregroundColor: _kPrimary,
+                                            foregroundColor: AppColors.primaryDeep,
                                             backgroundColor: Colors.white,
                                             side: const BorderSide(
                                               color: Colors.white,
@@ -508,8 +494,8 @@ class _EditTopBar extends StatelessWidget {
     return Container(
       height: 56,
       decoration: const BoxDecoration(
-        color: _kSurface,
-        border: Border(bottom: BorderSide(color: _kBorder)),
+        color: AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
@@ -522,7 +508,7 @@ class _EditTopBar extends StatelessWidget {
               child: Icon(
                 Icons.arrow_back_rounded,
                 size: 20,
-                color: _kSlate500,
+                color: AppColors.slate500,
               ),
             ),
           ),
@@ -532,14 +518,14 @@ class _EditTopBar extends StatelessWidget {
               itemName,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppFonts.semiBold(fontSize: 15, color: _kSlate900),
+              style: AppFonts.semiBold(fontSize: 15, color: AppColors.slate900),
             ),
           ),
           OutlinedButton(
             onPressed: isSubmitting ? null : onCancel,
             style: OutlinedButton.styleFrom(
-              foregroundColor: _kSlate700,
-              side: const BorderSide(color: _kBorder),
+              foregroundColor: AppColors.slate700,
+              side: const BorderSide(color: AppColors.border),
               padding: const EdgeInsets.symmetric(
                 horizontal: 18,
                 vertical: 9,
@@ -555,7 +541,7 @@ class _EditTopBar extends StatelessWidget {
           FilledButton(
             onPressed: isSubmitting ? null : onSave,
             style: FilledButton.styleFrom(
-              backgroundColor: _kPrimary,
+              backgroundColor: AppColors.primaryDeep,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(
                 horizontal: 18,
@@ -601,7 +587,7 @@ class _StockOverviewCard extends StatelessWidget {
     final Color statusBg, statusText;
     switch (status) {
       case InventoryStatus.inStock:
-        statusBg = const Color(0xFFF0FDF4);
+        statusBg = AppColors.stockInBg;
         statusText = const Color(0xFF166534);
       case InventoryStatus.lowStock:
         statusBg = const Color(0xFFFEF3C7);
@@ -642,7 +628,7 @@ class _StockOverviewCard extends StatelessWidget {
           _OverviewRow(
             label: 'On Hand',
             value: '${formatQuantity(item.onHand)} ${item.unit}',
-            valueColor: _kPrimary,
+            valueColor: AppColors.primaryDeep,
           ),
           const SizedBox(height: 8),
           _OverviewRow(
@@ -659,7 +645,7 @@ class _StockOverviewCard extends StatelessWidget {
             label: 'Stock Value',
             value:
                 '\$${(item.price * item.onHand).toStringAsFixed(2)}',
-            valueColor: _kSlate900,
+            valueColor: AppColors.slate900,
           ),
         ],
       ),
@@ -685,7 +671,7 @@ class _OverviewRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
       decoration: BoxDecoration(
-        color: _kSlate50,
+        color: AppColors.slate50,
         borderRadius: BorderRadius.circular(7),
       ),
       child: Row(
@@ -696,7 +682,7 @@ class _OverviewRow extends StatelessWidget {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12,
-              color: _kSlate500,
+              color: AppColors.slate500,
             ),
           ),
           trailing ??
@@ -706,7 +692,7 @@ class _OverviewRow extends StatelessWidget {
                   fontFamily: 'Inter',
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: valueColor ?? _kSlate900,
+                  color: valueColor ?? AppColors.slate900,
                 ),
               ),
         ],
@@ -731,9 +717,9 @@ class _RecentMovementsCard extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            color: _kSurface,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: _kBorder),
+            border: Border.all(color: AppColors.border),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -745,7 +731,7 @@ class _RecentMovementsCard extends StatelessWidget {
                   children: [
                     Text(
                       'Recent Movements',
-                      style: AppFonts.bold(fontSize: 14, color: _kSlate900),
+                      style: AppFonts.bold(fontSize: 14, color: AppColors.slate900),
                     ),
                     if (txns.length > 4)
                       Text(
@@ -753,14 +739,14 @@ class _RecentMovementsCard extends StatelessWidget {
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
-                          color: _kPrimary,
+                          color: AppColors.primaryDeep,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                   ],
                 ),
               ),
-              const Divider(height: 1, color: _kBorderFaint),
+              const Divider(height: 1, color: AppColors.borderFaint),
               if (recent.isEmpty)
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -768,7 +754,7 @@ class _RecentMovementsCard extends StatelessWidget {
                     'No transactions yet.',
                     style: AppFonts.regular(
                       fontSize: 13,
-                      color: _kSlate400,
+                      color: AppColors.slate400,
                     ),
                   ),
                 )
@@ -815,8 +801,8 @@ class _MovementRow extends StatelessWidget {
         icon = Icons.add_rounded;
         deltaLabel = '+${_fmtQty(txn.quantity)} $unit';
       case InventoryTxnType.use:
-        iconBg = const Color(0xFFEFF6FF);
-        iconColor = _kPrimary;
+        iconBg = AppColors.tintBlueBg;
+        iconColor = AppColors.primaryDeep;
         icon = Icons.remove_rounded;
         deltaLabel = '-${_fmtQty(txn.quantity)} $unit';
       case InventoryTxnType.waste:
@@ -825,8 +811,8 @@ class _MovementRow extends StatelessWidget {
         icon = Icons.delete_outline_rounded;
         deltaLabel = '-${_fmtQty(txn.quantity)} $unit';
       case InventoryTxnType.adjust:
-        iconBg = const Color(0xFFF1F5F9);
-        iconColor = _kSlate500;
+        iconBg = AppColors.borderFaint;
+        iconColor = AppColors.slate500;
         icon = Icons.tune_rounded;
         deltaLabel = '=${_fmtQty(txn.quantity)} $unit';
     }
@@ -859,7 +845,7 @@ class _MovementRow extends StatelessWidget {
                         fontFamily: 'Inter',
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: _kSlate900,
+                        color: AppColors.slate900,
                       ),
                     ),
                     if (txn.note != null && txn.note!.isNotEmpty)
@@ -870,7 +856,7 @@ class _MovementRow extends StatelessWidget {
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 10,
-                          color: _kSlate400,
+                          color: AppColors.slate400,
                         ),
                       ),
                   ],
@@ -893,7 +879,7 @@ class _MovementRow extends StatelessWidget {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 10,
-                      color: _kSlate400,
+                      color: AppColors.slate400,
                     ),
                   ),
                 ],
@@ -901,7 +887,7 @@ class _MovementRow extends StatelessWidget {
             ],
           ),
         ),
-        if (showDivider) const Divider(height: 1, color: _kBorderFaint),
+        if (showDivider) const Divider(height: 1, color: AppColors.borderFaint),
       ],
     );
   }
@@ -937,7 +923,7 @@ class _AlertBanner extends StatelessWidget {
             size: 16,
             color: isOutOfStock
                 ? const Color(0xFFDC2626)
-                : _kAmber700,
+                : AppColors.amber700,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -951,7 +937,7 @@ class _AlertBanner extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: isOutOfStock
                     ? const Color(0xFF991B1B)
-                    : _kAmber900,
+                    : AppColors.amber900,
               ),
             ),
           ),
@@ -978,14 +964,14 @@ class _Breadcrumb extends StatelessWidget {
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 12,
-            color: isLast ? _kSlate900 : _kSlate400,
+            color: isLast ? AppColors.slate900 : AppColors.slate400,
             fontWeight: isLast ? FontWeight.w500 : FontWeight.w400,
           ),
         ),
       );
       if (!isLast) {
         widgets.add(
-          const Icon(Icons.chevron_right, size: 14, color: _kSlate400),
+          const Icon(Icons.chevron_right, size: 14, color: AppColors.slate400),
         );
       }
     }
@@ -1006,16 +992,16 @@ class _FormCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: _kSurface,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: AppFonts.bold(fontSize: 16, color: _kSlate900),
+            style: AppFonts.bold(fontSize: 16, color: AppColors.slate900),
           ),
           const SizedBox(height: 20),
           child,
@@ -1035,16 +1021,16 @@ class _SideCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _kSurface,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: AppFonts.bold(fontSize: 14, color: _kSlate900),
+            style: AppFonts.bold(fontSize: 14, color: AppColors.slate900),
           ),
           const SizedBox(height: 14),
           child,
@@ -1070,7 +1056,7 @@ class _Field extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: _kSlate700,
+            color: AppColors.slate700,
           ),
         ),
         const SizedBox(height: 6),
@@ -1108,16 +1094,16 @@ class _ReadOnlyField extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
-        color: _kSlate50,
+        color: AppColors.slate50,
         borderRadius: BorderRadius.circular(7),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Text(
         value,
         style: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 13,
-          color: _kSlate500,
+          color: AppColors.slate500,
         ),
       ),
     );
@@ -1145,10 +1131,10 @@ class _CsTextField extends StatelessWidget {
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
-      style: AppFonts.regular(fontSize: 13, color: _kSlate900),
+      style: AppFonts.regular(fontSize: 13, color: AppColors.slate900),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: AppFonts.regular(fontSize: 13, color: _kSlate400),
+        hintStyle: AppFonts.regular(fontSize: 13, color: AppColors.slate400),
         filled: true,
         fillColor: AppColors.white,
         contentPadding: const EdgeInsets.symmetric(
@@ -1157,15 +1143,15 @@ class _CsTextField extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kBorder),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kBorder),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kPrimary, width: 1.5),
+          borderSide: const BorderSide(color: AppColors.primaryDeep, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
@@ -1202,13 +1188,13 @@ class _CsDropdown extends StatelessWidget {
       isExpanded: true,
       icon: const Icon(
         Icons.keyboard_arrow_down_rounded,
-        color: _kSlate400,
+        color: AppColors.slate400,
         size: 18,
       ),
-      style: AppFonts.regular(fontSize: 13, color: _kSlate900),
+      style: AppFonts.regular(fontSize: 13, color: AppColors.slate900),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: AppFonts.regular(fontSize: 13, color: _kSlate400),
+        hintStyle: AppFonts.regular(fontSize: 13, color: AppColors.slate400),
         filled: true,
         fillColor: AppColors.white,
         contentPadding: const EdgeInsets.symmetric(
@@ -1217,15 +1203,15 @@ class _CsDropdown extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kBorder),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kBorder),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: const BorderSide(color: _kPrimary, width: 1.5),
+          borderSide: const BorderSide(color: AppColors.primaryDeep, width: 1.5),
         ),
       ),
       items: items
