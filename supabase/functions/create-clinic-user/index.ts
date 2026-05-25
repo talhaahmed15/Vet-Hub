@@ -104,6 +104,59 @@ Deno.serve(async (req) => {
     );
   }
 
+  // Caller authorization: when an Authorization header is present, the caller
+  // must be an owner/admin in the target clinic. When absent, allow (signup path).
+  const authHeader = req.headers.get('Authorization');
+  if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+    const callerJwt = authHeader.slice(7).trim();
+    const callerClient = createClient(supabaseUrl, serviceRoleKey, {
+      global: { headers: { Authorization: `Bearer ${callerJwt}` } },
+      auth: { persistSession: false },
+    });
+    const { data: callerUser, error: callerErr } =
+      await callerClient.auth.getUser();
+    if (callerErr || !callerUser?.user) {
+      return new Response(
+        JSON.stringify({ ok: false, error: 'Invalid auth token' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        },
+      );
+    }
+    const { data: callerMember } = await supabase
+      .from('clinic_users')
+      .select('role')
+      .eq('clinic_id', clinic.clinic_id)
+      .eq('auth_user_id', callerUser.user.id)
+      .maybeSingle();
+    if (!callerMember) {
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: 'Not a member of the target clinic',
+        }),
+        {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        },
+      );
+    }
+    const callerRole = (callerMember.role ?? '').toString().toLowerCase();
+    if (callerRole !== 'owner' && callerRole !== 'admin') {
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: 'Only owners or admins can create members',
+        }),
+        {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        },
+      );
+    }
+  }
+
   const { data: existingUser, error: existingError } = await supabase
     .from("clinic_users")
     .select("id")
