@@ -6,6 +6,7 @@ import 'package:clinic_management_app/bloc/inventory_bloc/items_bloc.dart';
 import 'package:clinic_management_app/bloc/invoice/invoice_cubit.dart';
 import 'package:clinic_management_app/bloc/logged_clinic/logged_clinic_cubit.dart';
 import 'package:clinic_management_app/bloc/login/login_cubit.dart';
+import 'package:clinic_management_app/bloc/tasks/tasks_cubit.dart';
 import 'package:clinic_management_app/screens/splash/splash_screen.dart';
 import 'package:clinic_management_app/services/appointment_service.dart';
 import 'package:clinic_management_app/services/inventory_service.dart';
@@ -63,6 +64,9 @@ Future<void> main() async {
             create: (context) => InventoryItemsBloc(
               itemsRepository: context.read<ItemsService>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => TasksCubit(service: context.read<TaskService>()),
           ),
         ],
         child: const VetHubApp(),

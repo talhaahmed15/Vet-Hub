@@ -5,6 +5,7 @@ import 'package:clinic_management_app/screens/clinic/dashboard/clinic_dashboard.
 import 'package:clinic_management_app/screens/clinic/inventory/inventory_screen.dart';
 import 'package:clinic_management_app/screens/clinic/patients_module/patients_screen.dart';
 import 'package:clinic_management_app/screens/clinic/settings_module/settings_screen.dart';
+import 'package:clinic_management_app/screens/clinic/tasks/tasks_screen.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/utils/responsive.dart';
@@ -54,6 +55,11 @@ class _ClinicRootScreenState extends State<ClinicRootScreen> {
       label: 'Appointments',
     ),
     ClinicNavItem(
+      icon: Icons.checklist_outlined,
+      selectedIcon: Icons.checklist,
+      label: 'Tasks',
+    ),
+    ClinicNavItem(
       icon: Icons.inventory_2_outlined,
       selectedIcon: Icons.inventory_2,
       label: 'Inventory',
@@ -73,6 +79,7 @@ class _ClinicRootScreenState extends State<ClinicRootScreen> {
   final List<Widget> _pages = const [
     ClinicDashboardScreen(),
     RecentAppointmentsScreen(),
+    TasksScreen(),
     InventoryListScreen(),
     PatientsScreen(),
     SettingsScreen(),
