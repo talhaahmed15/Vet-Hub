@@ -7,7 +7,9 @@ import 'package:clinic_management_app/screens/auth/account_status/account_under_
 import 'package:clinic_management_app/screens/auth/app_start_screen.dart';
 import 'package:clinic_management_app/screens/auth/clinic_account_signup_flow/clinic_account_signup_flow.dart';
 import 'package:clinic_management_app/screens/clinic/clinic_root.dart';
+import 'package:clinic_management_app/screens/employee/employee_home_screen.dart';
 import 'package:clinic_management_app/services/auth_service.dart';
+import 'package:clinic_management_app/services/clinic_member_service.dart';
 import 'package:clinic_management_app/services/storage.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
@@ -93,10 +95,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _routeByStatus(String status) {
+  Future<void> _routeByStatus(String status) async {
     final normalized = status.trim().toLowerCase();
     if (normalized == 'active') {
-      NavigatorHelper.replace(context, const ClinicRootScreen());
+      final member = await ClinicMemberService().fetchCurrentMember();
+      if (!mounted) return;
+      final role = (member?.role ?? '').trim().toLowerCase();
+      final isAdmin = role == 'owner' || role == 'admin';
+      NavigatorHelper.replace(
+        context,
+        isAdmin ? const ClinicRootScreen() : const EmployeeHomeScreen(),
+      );
     } else if (normalized == 'blocked') {
       NavigatorHelper.replace(
         context,
