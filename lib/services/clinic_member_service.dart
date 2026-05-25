@@ -60,12 +60,10 @@ class ClinicMemberService {
     try {
       log('Fetching clinic members');
       final clinicId = await _getClinicId();
-      final query = _supabase.from('clinic_users').select(_memberColumns);
-      if (clinicId != null) {
-        query.eq('clinic_id', clinicId);
-      }
-
-      final data = await query.order('full_name', ascending: true);
+      final base = _supabase.from('clinic_users').select(_memberColumns);
+      final filtered =
+          clinicId != null ? base.eq('clinic_id', clinicId) : base;
+      final data = await filtered.order('full_name', ascending: true);
       final rows = (data as List<dynamic>).cast<Map<String, dynamic>>();
       return rows
           .map(ClinicMember.fromMap)
