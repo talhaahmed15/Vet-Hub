@@ -112,4 +112,39 @@ class ClinicMemberService {
       rethrow;
     }
   }
+
+  Future<void> createMember({
+    required String fullName,
+    required String username,
+    required String password,
+    required String phone,
+    required String role,
+  }) async {
+    final clinic = await Storage.getClinicData();
+    final clinicCode = clinic?['clinic_code']?.toString();
+    if (clinicCode == null || clinicCode.isEmpty) {
+      throw StateError('Missing clinic_code in local storage');
+    }
+    try {
+      final response = await _supabase.functions.invoke(
+        'create-clinic-user',
+        body: {
+          'clinic_code': clinicCode,
+          'full_name': fullName.trim(),
+          'username': username.trim(),
+          'password': password,
+          'phone': phone.trim(),
+          'role': role,
+          'account_status': 'active',
+        },
+      );
+      final data = response.data;
+      if (data is Map && data['ok'] != true) {
+        throw Exception(data['error']?.toString() ?? 'Failed to create user');
+      }
+    } catch (e) {
+      log('Error creating clinic member: $e');
+      rethrow;
+    }
+  }
 }

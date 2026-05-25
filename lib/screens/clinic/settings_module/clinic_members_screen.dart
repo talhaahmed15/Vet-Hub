@@ -1,5 +1,6 @@
 import 'package:clinic_management_app/models/clinic_member.dart';
 import 'package:clinic_management_app/models/clinic_role.dart';
+import 'package:clinic_management_app/screens/clinic/settings_module/add_member_sheet.dart';
 import 'package:clinic_management_app/services/clinic_member_service.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
@@ -153,6 +154,16 @@ class _ClinicMembersScreenState extends State<ClinicMembersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      floatingActionButton: widget.canManage
+          ? FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              onPressed: () async {
+                final created = await AddMemberSheet.show(context);
+                if (created) _reload();
+              },
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
       appBar: CustomAppBar(
         title: 'User Management',
         trailing: IconButton(
