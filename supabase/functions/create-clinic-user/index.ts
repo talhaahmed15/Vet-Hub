@@ -25,6 +25,7 @@ const ClinicUserSchema = z
     phone: z.string().min(5),
     auth_email: z.string().email().optional(),
     auth_user_id: z.string().uuid().optional(),
+    account_status: z.enum(['active', 'under_review', 'blocked']).optional(),
   })
   .refine((data) => data.auth_user_id || data.password, {
     message: "Password or auth_user_id is required",
@@ -204,7 +205,7 @@ Deno.serve(async (req) => {
       phone: payload.phone,
       auth_email: payload.auth_email ??
         `${payload.username.trim().toLowerCase()}@${payload.clinic_code}.vet-hub.local`,
-      account_status: "under_review",
+      account_status: payload.account_status ?? "under_review",
       role: payload.role,
       auth_user_id: authUserId,
     })
