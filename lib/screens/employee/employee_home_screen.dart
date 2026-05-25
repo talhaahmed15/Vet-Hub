@@ -1,7 +1,10 @@
+import 'package:clinic_management_app/bloc/tasks/tasks_cubit.dart';
 import 'package:clinic_management_app/screens/employee/employee_profile_screen.dart';
 import 'package:clinic_management_app/screens/employee/my_tasks_screen.dart';
+import 'package:clinic_management_app/services/task_service.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -13,9 +16,12 @@ class EmployeeHomeScreen extends StatefulWidget {
 class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   int _index = 0;
 
-  static const _pages = <Widget>[
-    MyTasksScreen(),
-    EmployeeProfileScreen(),
+  final List<Widget> _pages = [
+    BlocProvider(
+      create: (ctx) => TasksCubit(service: ctx.read<TaskService>()),
+      child: const MyTasksScreen(),
+    ),
+    const EmployeeProfileScreen(),
   ];
 
   @override

@@ -6,7 +6,10 @@ import 'package:clinic_management_app/screens/clinic/inventory/inventory_screen.
 import 'package:clinic_management_app/screens/clinic/patients_module/patients_screen.dart';
 import 'package:clinic_management_app/screens/clinic/settings_module/settings_screen.dart';
 import 'package:clinic_management_app/screens/clinic/tasks/tasks_screen.dart';
+import 'package:clinic_management_app/bloc/tasks/tasks_cubit.dart';
+import 'package:clinic_management_app/services/task_service.dart';
 import 'package:clinic_management_app/themes/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clinic_management_app/themes/app_fonts.dart';
 import 'package:clinic_management_app/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +79,16 @@ class _ClinicRootScreenState extends State<ClinicRootScreen> {
     ),
   ];
 
-  final List<Widget> _pages = const [
-    ClinicDashboardScreen(),
-    RecentAppointmentsScreen(),
-    TasksScreen(),
-    InventoryListScreen(),
-    PatientsScreen(),
-    SettingsScreen(),
+  final List<Widget> _pages = [
+    const ClinicDashboardScreen(),
+    const RecentAppointmentsScreen(),
+    BlocProvider(
+      create: (ctx) => TasksCubit(service: ctx.read<TaskService>()),
+      child: const TasksScreen(),
+    ),
+    const InventoryListScreen(),
+    const PatientsScreen(),
+    const SettingsScreen(),
   ];
 
   @override
