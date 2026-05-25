@@ -11,6 +11,7 @@ import 'package:clinic_management_app/services/appointment_service.dart';
 import 'package:clinic_management_app/services/inventory_service.dart';
 import 'package:clinic_management_app/services/invoice_service.dart';
 import 'package:clinic_management_app/services/items_service.dart';
+import 'package:clinic_management_app/services/task_service.dart';
 import 'package:clinic_management_app/themes/app_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ Future<void> main() async {
   final inventoryRepository = InventoryService();
   final appointmentRepository = AppointmentService();
   final invoiceRepository = InvoiceService();
+  final taskRepository = TaskService();
 
   runApp(
     MultiRepositoryProvider(
@@ -41,6 +43,7 @@ Future<void> main() async {
           value: appointmentRepository,
         ),
         RepositoryProvider<InvoiceService>.value(value: invoiceRepository),
+        RepositoryProvider<TaskService>.value(value: taskRepository),
       ],
       child: MultiBlocProvider(
         providers: [
