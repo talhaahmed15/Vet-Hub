@@ -6,6 +6,7 @@ class ClinicMember {
   final String role;
   final String accountStatus;
   final String? phone;
+  final String? username;
 
   const ClinicMember({
     required this.id,
@@ -13,6 +14,7 @@ class ClinicMember {
     required this.role,
     required this.accountStatus,
     this.phone,
+    this.username,
   });
 
   factory ClinicMember.fromMap(Map<String, dynamic> map) {
@@ -22,6 +24,7 @@ class ClinicMember {
       role: map['role']?.toString() ?? '',
       accountStatus: map['account_status']?.toString() ?? '',
       phone: map['phone']?.toString(),
+      username: map['username']?.toString(),
     );
   }
 

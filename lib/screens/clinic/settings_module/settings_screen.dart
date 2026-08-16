@@ -2,7 +2,6 @@
 import 'package:clinic_management_app/models/clinic_model.dart';
 import 'package:clinic_management_app/navigation/navigation_helper.dart';
 import 'package:clinic_management_app/screens/auth/login_screen.dart';
-import 'package:clinic_management_app/screens/clinic/settings_module/clinic_members_screen.dart';
 import 'package:clinic_management_app/screens/clinic/settings_module/clinic_profile_screen.dart';
 import 'package:clinic_management_app/services/auth_service.dart';
 import 'package:clinic_management_app/services/clinic_member_service.dart';
@@ -89,28 +88,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       NavigatorHelper.push(
                         context,
                         const ClinicProfileScreen(),
-                      );
-                    },
-                  ),
-                  _SettingsTile(
-                    icon: Icons.group_outlined,
-                    title: "User Management",
-                    subtitle: "Manage staff roles and permissions",
-                    trailing: canManage
-                        ? null
-                        : const _Badge(label: "Admin Only"),
-                    enabled: canManage,
-                    onTap: () {
-                      if (!canManage) {
-                        AppToast.error(
-                          context,
-                          'Only admins can manage users.',
-                        );
-                        return;
-                      }
-                      NavigatorHelper.push(
-                        context,
-                        ClinicMembersScreen(canManage: canManage),
                       );
                     },
                   ),

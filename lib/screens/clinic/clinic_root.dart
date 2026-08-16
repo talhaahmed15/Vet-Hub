@@ -4,6 +4,7 @@ import 'package:clinic_management_app/screens/clinic/appointment/recent_appointm
 import 'package:clinic_management_app/screens/clinic/dashboard/clinic_dashboard.dart';
 import 'package:clinic_management_app/screens/clinic/inventory/inventory_screen.dart';
 import 'package:clinic_management_app/screens/clinic/patients_module/patients_screen.dart';
+import 'package:clinic_management_app/screens/clinic/settings_module/clinic_members_screen.dart';
 import 'package:clinic_management_app/screens/clinic/settings_module/settings_screen.dart';
 import 'package:clinic_management_app/screens/clinic/tasks/tasks_screen.dart';
 import 'package:clinic_management_app/bloc/tasks/tasks_cubit.dart';
@@ -73,6 +74,11 @@ class _ClinicRootScreenState extends State<ClinicRootScreen> {
       label: 'Invoices',
     ),
     ClinicNavItem(
+      icon: Icons.group_outlined,
+      selectedIcon: Icons.group,
+      label: 'Users',
+    ),
+    ClinicNavItem(
       icon: Icons.settings_outlined,
       selectedIcon: Icons.settings,
       label: 'Settings',
@@ -88,6 +94,7 @@ class _ClinicRootScreenState extends State<ClinicRootScreen> {
     ),
     const InventoryListScreen(),
     const PatientsScreen(),
+    const ClinicMembersScreen(showAppBar: false),
     const SettingsScreen(),
   ];
 

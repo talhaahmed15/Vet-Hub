@@ -11,7 +11,7 @@ class ClinicMemberService {
   final SupabaseClient _supabase;
 
   static const String _memberColumns =
-      'id,full_name,role,account_status,phone';
+      'id,full_name,role,account_status,phone,username';
 
   Future<String?> _getClinicId() async {
     final data = await Storage.getClinicData();
@@ -107,6 +107,30 @@ class ClinicMemberService {
           .eq('id', memberId);
     } catch (e) {
       log('Error updating clinic member: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> resetMemberPassword({
+    required String memberId,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _supabase.functions.invoke(
+        'reset-clinic-user-password',
+        body: {
+          'member_id': memberId,
+          'new_password': newPassword,
+        },
+      );
+      final data = response.data;
+      if (data is Map && data['ok'] != true) {
+        throw Exception(
+          data['error']?.toString() ?? 'Failed to reset password',
+        );
+      }
+    } catch (e) {
+      log('Error resetting member password: $e');
       rethrow;
     }
   }
